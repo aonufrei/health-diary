@@ -2,34 +2,33 @@ create table aims
 (
     id            int         not null
         primary key,
-    mentioned     date        null,
-    modified_at   datetime(6) null,
     status        int         null,
     target_weight float       not null,
-    person_id     int         null
+    person_id     int         null,
+    mentioned     date        null,
+    modified_at   datetime(6) null
 );
-
 
 create table food
 (
     id          int          not null
         primary key,
+    name        varchar(255) null,
     created_at  datetime(6)  null,
-    modified_at datetime(6)  null,
-    name        varchar(255) null
+    modified_at datetime(6)  null
 );
 
 create table food_reports
 (
     id            int         not null
         primary key,
-    modified_at   datetime(6) null,
+    food_id       int         null,
+    amount        int         null,
+    metric_id     int         null,
     reported_date date        null,
-    food_id       int         null
+    modified_at   datetime(6) null
 
 );
-
-
 
 create table likes
 (
@@ -39,30 +38,26 @@ create table likes
     post_id   int null
 );
 
-
-
 create table metrics
 (
     id          int         not null
         primary key,
-    created_at  datetime(6) null,
-    modified_at datetime(6) null,
     name        int         null,
     value       int         null,
-    food_id     int         null
+    food_id     int         null,
+    created_at  datetime(6) null,
+    modified_at datetime(6) null
 );
-
-
 
 create table persons
 (
     id          int          not null
         primary key,
-    created_at  datetime(6)  null,
+    name        varchar(255) null,
     email       varchar(255) null,
     image_path  varchar(255) null,
-    modified_at datetime(6)  null,
-    name        varchar(255) null
+    created_at  datetime(6)  null,
+    modified_at datetime(6)  null
 );
 
 create table posts
@@ -70,35 +65,39 @@ create table posts
     id          int          not null
         primary key,
     content     varchar(255) null,
-    created_at  datetime(6)  null,
     image_path  varchar(255) null,
-    modified_at datetime(6)  null,
-    author_id   int          null
+    author_id   int          null,
+    created_at  datetime(6)  null,
+    modified_at datetime(6)  null
 );
 
 alter table aims
-    add constraint FKl2g1yesrvnktm58hphg2ydfj9
+    add constraint aim_to_person
         foreign key (person_id) references persons (id);
 
 alter table food_reports
-    add constraint FKhbpk52qxr1cn8lmnalr1scagv
+    add constraint food_report_to_food
         foreign key (food_id) references food (id);
 
+alter table food_reports
+    add constraint food_report_to_metric
+        foreign key (metric_id) references metrics (id);
+
 alter table likes
-    add constraint FK2bgnjb3394d7a02rsqbmqbdg9
+    add constraint like_to_person
         foreign key (person_id) references persons (id);
 
 alter table likes
-    add constraint FKry8tnr4x2vwemv2bb0h5hyl0x
+    add constraint like_to_post
         foreign key (post_id) references posts (id);
 
 alter table metrics
     add
-        constraint FKraxq8a839mr2tlcutek1uu4ks
+        constraint metric_to_food
             foreign key (food_id) references food (id);
 
 alter table posts
-    add constraint FK31biid9u6ekl7h6n2i7fgnqdq
+    add constraint post_to_person
         foreign key (author_id) references persons (id)
 
 

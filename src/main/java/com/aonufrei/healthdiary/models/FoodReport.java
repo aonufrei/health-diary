@@ -23,6 +23,10 @@ public class FoodReport {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "food_id")
 	private Food food;
+	private Integer amount;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "metric_id")
+	private Metric metric;
 	@CreatedDate
 	private LocalDate reportedDate;
 	@UpdateTimestamp
