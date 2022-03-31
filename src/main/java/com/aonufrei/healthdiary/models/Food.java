@@ -19,6 +19,9 @@ public class Food {
 	private String name;
 	@OneToMany(mappedBy = "food", cascade = CascadeType.ALL)
 	private Set<Metric> metrics;
+	private Integer carbs;
+	private Integer protein;
+	private Integer fat;
 	@CreationTimestamp
 	private LocalDateTime createdAt;
 	@UpdateTimestamp
