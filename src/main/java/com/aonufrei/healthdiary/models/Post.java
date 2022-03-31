@@ -12,7 +12,7 @@ import java.util.Set;
 @Entity(name = "posts")
 public class Post {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String content;
     private String imagePath;
