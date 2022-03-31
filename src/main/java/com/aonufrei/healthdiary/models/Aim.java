@@ -14,7 +14,7 @@ public class Aim {
 
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 	private float targetWeight;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "person_id")

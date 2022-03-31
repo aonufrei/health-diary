@@ -19,7 +19,7 @@ public class FoodReport {
 
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "food_id")
 	private Food food;

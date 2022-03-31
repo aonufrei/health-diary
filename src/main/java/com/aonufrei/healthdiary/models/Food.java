@@ -17,7 +17,7 @@ import java.util.Set;
 public class Food {
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 	private String name;
 	@OneToMany(mappedBy = "food", cascade = CascadeType.ALL)
 	private Set<Metric> metrics;

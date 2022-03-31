@@ -18,7 +18,7 @@ public class BodyReport {
 
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 	private float height;
 	private float weight;
 	@ManyToOne(fetch = FetchType.LAZY)

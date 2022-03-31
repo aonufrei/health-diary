@@ -13,7 +13,7 @@ import java.util.Set;
 public class Post {
     @Id
     @GeneratedValue
-    private int id;
+    private Integer id;
     private String content;
     private String imagePath;
     @ManyToOne(fetch = FetchType.LAZY)

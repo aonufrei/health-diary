@@ -15,7 +15,7 @@ public class Like {
 
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "post_id")
 	private Post post;

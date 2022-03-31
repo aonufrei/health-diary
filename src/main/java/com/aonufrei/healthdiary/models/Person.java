@@ -14,7 +14,7 @@ public class Person {
 
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 	private String name;
 	private String email;
 	private String imagePath;

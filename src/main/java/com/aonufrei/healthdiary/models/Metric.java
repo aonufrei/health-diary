@@ -18,7 +18,7 @@ public class Metric {
 
 	@Id
 	@GeneratedValue
-	private int id;
+	private Integer id;
 	private FoodMetricType name;
 	private Integer value;
 	@ManyToOne(fetch = FetchType.LAZY)
