@@ -1,7 +1,5 @@
 package com.aonufrei.healthdiary.dtos;
 
-import com.aonufrei.healthdiary.models.AimStatus;
-import com.aonufrei.healthdiary.models.Person;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,15 +12,17 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AimInDto {
+public class FoodReportInDto {
 
-	private Float targetWeight;
+	@JsonProperty("food_id")
+	private Integer foodId;
 
-	@JsonProperty("person_id")
-	private Integer personId;
+	private Integer amount;
 
-	private LocalDate mentioned;
+	@JsonProperty("metric_id")
+	private Integer metricId;
 
-	private AimStatus status;
+	@JsonProperty("reported_date")
+	private LocalDate reportedDate;
 
 }

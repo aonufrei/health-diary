@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,12 +37,27 @@ public class PersonService {
 	}
 
 	public PersonDto getById(Integer id) {
-		return new PersonDto(repo.getById(id));
+		Person person = repo.getById(id);
+		if (person == null) {
+			return null;
+		}
+		return new PersonDto(person);
+	}
+
+	public Person getModelById(Integer id) {
+		return repo.getById(id);
 	}
 
 	@Transactional
 	public boolean update(Integer id, PersonInDto inDto) {
+		if (id == null || inDto == null) {
+			return false;
+		}
+
 		Person existing = repo.getById(id);
+		if (existing == null) {
+			return false;
+		}
 		if (inDto.getName() != null) {
 			existing.setName(inDto.getName());
 		}
@@ -52,6 +68,29 @@ public class PersonService {
 			existing.setImagePath(inDto.getImagePath());
 		}
 		return repo.save(existing).getId() > 0;
+	}
+
+	public boolean exists(Integer id) {
+		return repo.existsById(id);
+	}
+
+	public Person getPersonToRemain(Integer nPersonId, Person existingPerson) {
+		if (nPersonId == null)
+			return existingPerson;
+
+		Integer existingPersonId = getPersonId(existingPerson);
+		if (!Objects.equals(existingPersonId, nPersonId)) {
+			Person nPerson = repo.getById(nPersonId);
+			if (nPerson != null) {
+				return nPerson;
+			}
+		}
+
+		return existingPerson;
+	}
+
+	public static Integer getPersonId(Person person) {
+		return person != null && person.getId() != null ? person.getId() : null;
 	}
 
 	public void delete(Integer id) {

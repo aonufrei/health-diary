@@ -2,7 +2,6 @@ package com.aonufrei.healthdiary.controllers.rest;
 
 import com.aonufrei.healthdiary.dtos.PersonDto;
 import com.aonufrei.healthdiary.dtos.PersonInDto;
-import com.aonufrei.healthdiary.models.Person;
 import com.aonufrei.healthdiary.services.PersonService;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,11 +9,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/persons")
-public class PersonController {
+public class PersonRestController {
 
 	private final PersonService service;
 
-	public PersonController(PersonService service) {
+	public PersonRestController(PersonService service) {
 		this.service = service;
 	}
 

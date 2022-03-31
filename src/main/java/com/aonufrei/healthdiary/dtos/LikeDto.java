@@ -1,6 +1,6 @@
 package com.aonufrei.healthdiary.dtos;
 
-import com.aonufrei.healthdiary.models.Person;
+import com.aonufrei.healthdiary.models.Like;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -13,16 +13,13 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PersonDto {
+public class LikeDto {
 
 	private Integer id;
 
-	private String name;
+	private PostDto post;
 
-	private String email;
-
-	@JsonProperty("image_path")
-	private String imagePath;
+	private PersonDto author;
 
 	@JsonProperty("created_at")
 	private LocalDateTime createdAt;
@@ -30,14 +27,11 @@ public class PersonDto {
 	@JsonProperty("modified_at")
 	private LocalDateTime modifiedAt;
 
-
-	public PersonDto(Person person) {
-		this.id = person.getId();
-		this.name = person.getName();
-		this.email = person.getEmail();
-		this.imagePath = person.getImagePath();
-		this.createdAt = person.getCreatedAt();
-		this.modifiedAt = person.getModifiedAt();
+	public LikeDto(Like like) {
+		this.id = like.getId();
+		this.post = like.getPost() != null ? new PostDto(like.getPost()) : null;
+		this.author = like.getAuthor() != null ? new PersonDto(like.getAuthor()) : null;
+		this.createdAt = like.getCreatedAt();
+		this.modifiedAt = like.getModifiedAt();
 	}
-
 }
