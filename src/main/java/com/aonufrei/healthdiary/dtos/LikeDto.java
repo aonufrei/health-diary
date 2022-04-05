@@ -17,9 +17,11 @@ public class LikeDto {
 
 	private Integer id;
 
-	private PostDto post;
+	@JsonProperty("post_id")
+	private Integer postId;
 
-	private PersonDto author;
+	@JsonProperty("author_id")
+	private Integer authorId;
 
 	@JsonProperty("created_at")
 	private LocalDateTime createdAt;
@@ -27,11 +29,4 @@ public class LikeDto {
 	@JsonProperty("modified_at")
 	private LocalDateTime modifiedAt;
 
-	public LikeDto(Like like) {
-		this.id = like.getId();
-		this.post = like.getPost() != null ? new PostDto(like.getPost()) : null;
-		this.author = like.getAuthor() != null ? new PersonDto(like.getAuthor()) : null;
-		this.createdAt = like.getCreatedAt();
-		this.modifiedAt = like.getModifiedAt();
-	}
 }

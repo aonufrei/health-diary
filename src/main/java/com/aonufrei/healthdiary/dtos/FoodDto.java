@@ -29,11 +29,4 @@ public class FoodDto {
 	@JsonProperty("modified_at")
 	private LocalDateTime modifiedAt;
 
-	public FoodDto(Food food) {
-		this.id = food.getId();
-		this.name = food.getName();
-		this.metrics = food.getMetrics().stream().map(MetricDto::new).collect(Collectors.toSet());
-		this.createdAt = food.getCreatedAt();
-		this.modifiedAt = food.getModifiedAt();
-	}
 }

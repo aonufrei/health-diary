@@ -18,9 +18,15 @@ public class MetricDto {
 
 	private Integer id;
 
-	private FoodMetricType name;
+	private FoodMetricType type;
 
-	private Integer value;
+	private Float calories;
+
+	private Float carbs;
+
+	private Float protein;
+
+	private Float fat;
 
 	@JsonProperty("food_id")
 	private Integer foodId;
@@ -30,15 +36,5 @@ public class MetricDto {
 
 	@JsonProperty("modified_at")
 	private LocalDateTime modifiedAt;
-
-
-	public MetricDto(Metric metric) {
-		this.id = metric.getId();
-		this.name = metric.getName();
-		this.value = metric.getValue();
-		this.foodId = metric.getFood() != null ? metric.getFood().getId() : null;
-		this.createdAt = metric.getCreatedAt();
-		this.modifiedAt = metric.getModifiedAt();
-	}
 
 }

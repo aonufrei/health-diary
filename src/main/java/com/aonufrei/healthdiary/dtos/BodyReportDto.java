@@ -22,8 +22,8 @@ public class BodyReportDto {
 
 	private Float weight;
 
-	@JsonProperty("product_id")
-	private Integer productId;
+	@JsonProperty("person_id")
+	private Integer personId;
 
 	@JsonProperty("logged_time")
 	private LocalDateTime loggedTime;
@@ -34,13 +34,4 @@ public class BodyReportDto {
 	@JsonProperty("modified_at")
 	private LocalDateTime modifiedAt;
 
-
-	public BodyReportDto(BodyReport bodyReport) {
-		this.id = bodyReport.getId();
-		this.height = bodyReport.getHeight();
-		this.weight = bodyReport.getWeight();
-		this.loggedTime = bodyReport.getLoggedTime();
-		this.createdAt = bodyReport.getCreatedAt();
-		this.modifiedAt = bodyReport.getModifiedAt();
-	}
 }

@@ -26,7 +26,7 @@ public class BodyReportRestController {
 
 	@PostMapping
 	public Integer addBodyReport(@RequestBody BodyReportInDto dto) {
-		return service.add(dto);
+		return service.add(dto).getId();
 	}
 
 	@PutMapping("/{id}")

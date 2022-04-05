@@ -13,11 +13,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MetricInDto {
 
-	private Integer id;
+	private FoodMetricType type;
 
-	private FoodMetricType name;
+	private Float calories;
 
-	private Integer value;
+	private Float carbs;
+
+	private Float protein;
+
+	private Float fat;
 
 	@JsonProperty("food_id")
 	private Integer foodId;

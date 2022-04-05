@@ -25,7 +25,7 @@ public class PersonRestController {
 
 	@PostMapping
 	public Integer addPerson(@RequestBody PersonInDto dto) {
-		return service.add(dto);
+		return service.add(dto).getId();
 	}
 
 	@PutMapping("/{id}")

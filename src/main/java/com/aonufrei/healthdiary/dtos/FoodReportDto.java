@@ -30,13 +30,4 @@ public class FoodReportDto {
 	@JsonProperty("modified_at")
 	private LocalDateTime modifiedAt;
 
-	public FoodReportDto(FoodReport report) {
-		this.id = report.getId();
-		this.food = report.getFood() != null ? new FoodDto(report.getFood()) : null;
-		this.amount = report.getAmount();
-		this.metric = report.getMetric() != null ? new MetricDto(report.getMetric()) : null;
-		this.reportedDate = report.getReportedDate();
-		this.modifiedAt = report.getModifiedAt();
-	}
-
 }

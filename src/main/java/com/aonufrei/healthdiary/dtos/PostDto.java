@@ -25,7 +25,8 @@ public class PostDto {
 	@JsonProperty("likes_count")
 	private Integer likesCount;
 
-	private PersonDto author;
+	@JsonProperty("author_id")
+	private Integer authorId;
 
 	@JsonProperty("created_at")
 	private LocalDateTime createdAt;
@@ -33,13 +34,4 @@ public class PostDto {
 	@JsonProperty("modified_at")
 	private LocalDateTime modifiedAt;
 
-	public PostDto(Post post) {
-		this.id = post.getId();
-		this.content = post.getContent();
-		this.imagePath = post.getImagePath();
-		this.likesCount = post.getLikes().size();
-		this.author = post.getAuthor() != null ? new PersonDto(post.getAuthor()) : null;
-		this.createdAt = post.getCreatedAt();
-		this.modifiedAt = post.getModifiedAt();
-	}
 }

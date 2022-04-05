@@ -2,6 +2,7 @@ package com.aonufrei.healthdiary.controllers.rest;
 
 import com.aonufrei.healthdiary.dtos.AimDto;
 import com.aonufrei.healthdiary.dtos.AimInDto;
+import com.aonufrei.healthdiary.models.Aim;
 import com.aonufrei.healthdiary.services.AimService;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +25,7 @@ public class AimRestController {
 
 	@PostMapping
 	public Integer addAim(@RequestBody AimInDto inDto) {
-		return service.add(inDto);
+		return service.add(inDto).getId();
 	}
 
 	@PutMapping("/{id}")
@@ -39,7 +40,7 @@ public class AimRestController {
 
 	@DeleteMapping("/{id}")
 	public boolean deleteAim(@PathVariable("id") Integer id) {
-		service.deleteAim(id);
+		service.delete(id);
 		return true;
 	}
 }

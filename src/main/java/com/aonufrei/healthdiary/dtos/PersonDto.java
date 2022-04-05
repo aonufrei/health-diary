@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -24,20 +25,12 @@ public class PersonDto {
 	@JsonProperty("image_path")
 	private String imagePath;
 
+	private LocalDate dob;
+
 	@JsonProperty("created_at")
 	private LocalDateTime createdAt;
 
 	@JsonProperty("modified_at")
 	private LocalDateTime modifiedAt;
-
-
-	public PersonDto(Person person) {
-		this.id = person.getId();
-		this.name = person.getName();
-		this.email = person.getEmail();
-		this.imagePath = person.getImagePath();
-		this.createdAt = person.getCreatedAt();
-		this.modifiedAt = person.getModifiedAt();
-	}
 
 }

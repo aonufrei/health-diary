@@ -29,7 +29,7 @@ public class PostRestController {
 
 	@PostMapping
 	public Integer addPost(@RequestBody PostInDto inDto) {
-		return service.add(inDto);
+		return service.add(inDto).getId();
 	}
 
 	@PutMapping("/{id}")
@@ -39,7 +39,8 @@ public class PostRestController {
 
 	@DeleteMapping("/{id}")
 	public boolean deletePost(@PathVariable("id") Integer id) {
-		return service.delete(id);
+		service.delete(id);
+		return true;
 	}
 
 }
