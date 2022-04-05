@@ -19,7 +19,7 @@ public abstract class AbstractCrudService<ID, M, MD, MID, R extends JpaRepositor
 
 	protected AbstractCrudService(R repo, Function<MID, M> inDtoToModelFunction, Function<M, MD> modelToDtoFunction, BiConsumer<M, MID> updateFunction) {
 		if (repo == null || inDtoToModelFunction == null || modelToDtoFunction == null || updateFunction == null) {
-			throw new RuntimeException("Crud service was created instantiated incorrectly");
+			throw new RuntimeException("Crud service was initialized incorrectly");
 		}
 
 		this.repo = repo;
