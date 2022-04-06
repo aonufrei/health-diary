@@ -3,6 +3,8 @@ package com.aonufrei.healthdiary.dtos;
 import com.aonufrei.healthdiary.models.AimStatus;
 import com.aonufrei.healthdiary.models.Person;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,16 +21,17 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class AimInDto {
 
-	@NotNull
-	@Size(min = 45, max = 350)
+	@Schema(description = "Target weight in specified aim")
 	private Float targetWeight;
 
-	@NotNull
+	@Schema(description = "The owner of the aim")
 	@JsonProperty("person_id")
 	private Integer personId;
 
+	@Schema(description = "When aim was created")
 	private LocalDate mentioned = LocalDate.now();
 
+	@Schema(description = "Stage of the aim")
 	private AimStatus status = AimStatus.CREATED;
 
 }

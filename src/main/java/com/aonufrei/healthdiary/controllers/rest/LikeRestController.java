@@ -31,7 +31,7 @@ public class LikeRestController {
 			@Parameter(name = "size", description = "The size of the requested page. Default value is 10")
 	})
 	@GetMapping
-	public List<LikeDto> getAllLikes(@RequestParam("page") Integer page, @RequestParam("size") Integer pageSize) {
+	public List<LikeDto> getAllLikes(@RequestParam("page") Integer page, @RequestParam(value = "size", required = false) Integer pageSize) {
 		return service.getAll(page, Optional.ofNullable(pageSize).orElse(DEFAULT_LIST_RESULT_PAGE_SIZE));
 	}
 
@@ -42,18 +42,27 @@ public class LikeRestController {
 	}
 
 	@Operation(summary = "Update like")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the aim you want to update")
+	})
 	@PutMapping("/{id}")
 	public boolean updateLike(@RequestBody LikeInDto inDto, @PathVariable("id") Integer id) {
 		return service.update(id, inDto);
 	}
 
 	@Operation(summary = "Get like by id")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the aim you want to get")
+	})
 	@GetMapping("/{id}")
 	public LikeDto getLikeById(@PathVariable("id") Integer id) {
 		return service.getById(id);
 	}
 
 	@Operation(summary = "Delete like by id")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the aim you want to delete")
+	})
 	@DeleteMapping("/{id}")
 	public boolean deleteLike(@PathVariable("id") Integer id) {
 		service.delete(id);

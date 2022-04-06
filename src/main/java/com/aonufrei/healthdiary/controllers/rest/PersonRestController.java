@@ -31,7 +31,7 @@ public class PersonRestController {
 			@Parameter(name = "size", description = "The size of the requested page. Default value is 10")
 	})
 	@GetMapping
-	public List<PersonDto> getAllPersons(@RequestParam("page") Integer page, @RequestParam("page_size") Integer pageSize) {
+	public List<PersonDto> getAllPersons(@RequestParam("page") Integer page, @RequestParam(value = "size", required = false) Integer pageSize) {
 		return service.getAll(page, Optional.ofNullable(pageSize).orElse(DEFAULT_LIST_RESULT_PAGE_SIZE));
 	}
 
@@ -42,18 +42,27 @@ public class PersonRestController {
 	}
 
 	@Operation(summary = "Update existing person")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the aim you want to update")
+	})
 	@PutMapping("/{id}")
 	public boolean updatePerson(@RequestBody PersonInDto inDto, @PathVariable Integer id) {
 		return service.update(id, inDto);
 	}
 
 	@Operation(summary = "Get person by id")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the aim you want to get")
+	})
 	@GetMapping("/{id}")
 	public PersonDto getPersonById(@PathVariable Integer id) {
 		return service.getById(id);
 	}
 
 	@Operation(summary = "Delete person by id")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the aim you want to delete")
+	})
 	@DeleteMapping("/{id}")
 	public Boolean deletePerson(@PathVariable Integer id) {
 		service.delete(id);

@@ -31,29 +31,40 @@ public class PostRestController {
 			@Parameter(name = "size", description = "The size of the requested page. Default value is 10")
 	})
 	@GetMapping
-	public List<PostDto> getAllPosts(@RequestParam("page") Integer page, @RequestParam("page_size") Integer pageSize) {
+	public List<PostDto> getAllPosts(@RequestParam("page") Integer page, @RequestParam(value = "size", required = false) Integer pageSize) {
 		return service.getAll(page, Optional.ofNullable(pageSize).orElse(DEFAULT_LIST_RESULT_PAGE_SIZE));
 	}
 
-	@Operation(summary = "Create post")
+
+	@Operation(summary = "Get post by id")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the aim you want to update")
+	})
 	@GetMapping("/{id}")
 	public PostDto getPostById(@PathVariable("id") Integer id) {
 		return service.getById(id);
 	}
 
-	@Operation(summary = "Update existing post")
+
+	@Operation(summary = "Create post")
 	@PostMapping
 	public Integer addPost(@RequestBody PostInDto inDto) {
 		return service.add(inDto).getId();
 	}
 
-	@Operation(summary = "Get post by id")
+	@Operation(summary = "Update existing post")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the aim you want to get")
+	})
 	@PutMapping("/{id}")
 	public boolean updatePost(@RequestBody PostInDto inDto, @PathVariable("id") Integer id) {
 		return service.update(id, inDto);
 	}
 
 	@Operation(summary = "Delete post by id")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the aim you want to delete")
+	})
 	@DeleteMapping("/{id}")
 	public boolean deletePost(@PathVariable("id") Integer id) {
 		service.delete(id);
