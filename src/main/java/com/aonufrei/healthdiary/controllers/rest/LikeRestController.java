@@ -3,10 +3,18 @@ package com.aonufrei.healthdiary.controllers.rest;
 import com.aonufrei.healthdiary.dtos.LikeDto;
 import com.aonufrei.healthdiary.dtos.LikeInDto;
 import com.aonufrei.healthdiary.services.LikeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
+import static com.aonufrei.healthdiary.configurations.ApplicationConfigs.DEFAULT_LIST_RESULT_PAGE_SIZE;
+
+@Tag(name = "Like Controller")
 @RestController
 @RequestMapping("api/v1/likes")
 public class LikeRestController {
@@ -17,26 +25,35 @@ public class LikeRestController {
 		this.service = service;
 	}
 
+	@Operation(summary = "Get all likes")
+	@Parameters({
+			@Parameter(name = "page", description = "Result page number"),
+			@Parameter(name = "size", description = "The size of the requested page. Default value is 10")
+	})
 	@GetMapping
 	public List<LikeDto> getAllLikes(@RequestParam("page") Integer page, @RequestParam("size") Integer pageSize) {
-		return service.getAll(page, pageSize);
+		return service.getAll(page, Optional.ofNullable(pageSize).orElse(DEFAULT_LIST_RESULT_PAGE_SIZE));
 	}
 
+	@Operation(summary = "Create like")
 	@PostMapping
 	public Integer addLike(@RequestBody LikeInDto inDto) {
 		return service.add(inDto).getId();
 	}
 
+	@Operation(summary = "Update like")
 	@PutMapping("/{id}")
 	public boolean updateLike(@RequestBody LikeInDto inDto, @PathVariable("id") Integer id) {
 		return service.update(id, inDto);
 	}
 
+	@Operation(summary = "Get like by id")
 	@GetMapping("/{id}")
 	public LikeDto getLikeById(@PathVariable("id") Integer id) {
 		return service.getById(id);
 	}
 
+	@Operation(summary = "Delete like by id")
 	@DeleteMapping("/{id}")
 	public boolean deleteLike(@PathVariable("id") Integer id) {
 		service.delete(id);
