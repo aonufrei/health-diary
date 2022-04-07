@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotBlank;
+
 
 @Data
 @Builder
@@ -14,6 +16,7 @@ import lombok.NoArgsConstructor;
 public class FoodInDto {
 
 	@Schema(description = "Name of the food")
+	@NotBlank(message = "name field is required")
 	private String name;
 
 }

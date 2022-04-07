@@ -1,6 +1,7 @@
 package com.aonufrei.healthdiary.dtos;
 
 
+import com.aonufrei.healthdiary.models.BodyReportType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -19,11 +20,11 @@ public class BodyReportDto {
 	@Schema(description = "Id")
 	private Integer id;
 
-	@Schema(description = "New person height")
-	private Float height;
+	@Schema(description = "Value of the report")
+	private Float value;
 
-	@Schema(description = "New person weight")
-	private Float weight;
+	@Schema(description = "Type of the report")
+	private BodyReportType type;
 
 	@Schema(description = "Author of body report")
 	@JsonProperty("person_id")

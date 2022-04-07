@@ -19,9 +19,9 @@ public class BodyReport {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
-	private Float height;
+	private Float value;
 
-	private Float weight;
+	private BodyReportType type;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "person_id", insertable = false, updatable = false)

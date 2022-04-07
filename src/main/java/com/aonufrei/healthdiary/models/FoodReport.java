@@ -29,6 +29,8 @@ public class FoodReport {
 
 	private Integer amount;
 
+	private FoodReportType type;
+
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "metric_id", updatable = false, insertable = false)
 	private Metric metric;

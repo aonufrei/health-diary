@@ -13,6 +13,7 @@ public class PostService extends AbstractCrudService<Integer, Post, PostDto, Pos
 
 	public PostService(PostRepository repo) {
 		super(repo, ModelDtoUtil::inDtoToModel, ModelDtoUtil::modelToDto, ModelDtoUtil::updateModel);
+		setValidator(validator);
 	}
 
 }

@@ -13,6 +13,7 @@ public class FoodService extends AbstractCrudService<Integer, Food, FoodDto, Foo
 
 	public FoodService(FoodRepository repo) {
 		super(repo, ModelDtoUtil::inDtoToModel, ModelDtoUtil::modelToDto, ModelDtoUtil::updateModel);
+		setValidator(validator);
 	}
 
 }

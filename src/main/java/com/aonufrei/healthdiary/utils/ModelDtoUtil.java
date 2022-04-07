@@ -26,8 +26,8 @@ public class ModelDtoUtil {
 		if (inDto == null) return null;
 
 		return BodyReport.builder()
-				.height(inDto.getHeight())
-				.weight(inDto.getWeight())
+				.value(inDto.getValue())
+				.type(inDto.getType())
 				.loggedTime(inDto.getLoggedTime())
 				.personId(inDto.getPersonId())
 				.build();
@@ -48,6 +48,7 @@ public class ModelDtoUtil {
 				.amount(inDto.getAmount())
 				.foodId(inDto.getFoodId())
 				.metricId(inDto.getMetricId())
+				.type(inDto.getType())
 				.reportedDate(inDto.getReportedDate())
 				.build();
 	}
@@ -109,8 +110,8 @@ public class ModelDtoUtil {
 	public static void updateModel(@NotNull BodyReport model, @NotNull BodyReportInDto inDto) {
 		if (inDto == null) return;
 
-		Optional.ofNullable(inDto.getHeight()).ifPresent(model::setHeight);
-		Optional.ofNullable(inDto.getWeight()).ifPresent(model::setWeight);
+		Optional.ofNullable(inDto.getValue()).ifPresent(model::setValue);
+		Optional.ofNullable(inDto.getType()).ifPresent(model::setType);
 		Optional.ofNullable(inDto.getLoggedTime()).ifPresent(model::setLoggedTime);
 		Optional.ofNullable(inDto.getPersonId()).ifPresent(model::setPersonId);
 	}
@@ -128,6 +129,7 @@ public class ModelDtoUtil {
 		Optional.ofNullable(inDto.getAmount()).ifPresent(model::setAmount);
 		Optional.ofNullable(inDto.getFoodId()).ifPresent(model::setFoodId);
 		Optional.ofNullable(inDto.getMetricId()).ifPresent(model::setMetricId);
+		Optional.ofNullable(inDto.getType()).ifPresent(model::setType);
 		Optional.ofNullable(inDto.getReportedDate()).ifPresent(model::setReportedDate);
 	}
 
@@ -186,8 +188,8 @@ public class ModelDtoUtil {
 
 		return BodyReportDto.builder()
 				.id(model.getId())
-				.height(model.getHeight())
-				.weight(model.getWeight())
+				.value(model.getValue())
+				.type(model.getType())
 				.personId(model.getPersonId())
 				.createdAt(model.getCreatedAt())
 				.modifiedAt(model.getModifiedAt())
@@ -214,6 +216,7 @@ public class ModelDtoUtil {
 				.food(model.getFood() != null ? modelToDto(model.getFood()) : null)
 				.amount(model.getAmount())
 				.metric(model.getMetric() != null ? modelToDto(model.getMetric()) : null)
+				.type(model.getType())
 				.reportedDate(model.getReportedDate())
 				.modifiedAt(model.getModifiedAt())
 				.build();

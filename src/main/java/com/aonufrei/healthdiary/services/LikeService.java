@@ -13,6 +13,7 @@ public class LikeService extends AbstractCrudService<Integer, Like, LikeDto, Lik
 
 	public LikeService(LikeRepository repo) {
 		super(repo, ModelDtoUtil::inDtoToModel, ModelDtoUtil::modelToDto, ModelDtoUtil::updateModel);
+		setValidator(validator);
 	}
 
 }

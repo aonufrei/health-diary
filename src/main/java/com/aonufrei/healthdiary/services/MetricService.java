@@ -13,6 +13,7 @@ public class MetricService extends AbstractCrudService<Integer, Metric, MetricDt
 
 	public MetricService(MetricRepository repo) {
 		super(repo, ModelDtoUtil::inDtoToModel, ModelDtoUtil::modelToDto, ModelDtoUtil::updateModel);
+		setValidator(validator);
 	}
 
 }

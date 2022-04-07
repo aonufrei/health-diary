@@ -1,6 +1,7 @@
 package com.aonufrei.healthdiary.dtos;
 
 import com.aonufrei.healthdiary.models.FoodReport;
+import com.aonufrei.healthdiary.models.FoodReportType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -28,6 +30,10 @@ public class FoodReportDto {
 
 	@Schema(description = "The food metric")
 	private MetricDto metric;
+
+	@Schema(description = "Identifies the meal")
+	@NotNull(message = "type field is required")
+	private FoodReportType type;
 
 	@Schema(description = "When food report was created")
 	@JsonProperty("reported_date")

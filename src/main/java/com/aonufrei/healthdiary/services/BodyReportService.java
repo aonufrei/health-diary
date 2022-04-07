@@ -13,5 +13,6 @@ public class BodyReportService extends AbstractCrudService<Integer, BodyReport, 
 
 	public BodyReportService(BodyReportRepository repo) {
 		super(repo, ModelDtoUtil::inDtoToModel, ModelDtoUtil::modelToDto, ModelDtoUtil::updateModel);
+		setValidator(validator);
 	}
 }

@@ -12,6 +12,7 @@ public class FoodReportService extends AbstractCrudService<Integer, FoodReport, 
 
 	public FoodReportService(FoodReportRepository repo) {
 		super(repo, ModelDtoUtil::inDtoToModel, ModelDtoUtil::modelToDto, ModelDtoUtil::updateModel);
+		setValidator(validator);
 	}
 
 }
