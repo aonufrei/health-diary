@@ -81,6 +81,10 @@ public abstract class AbstractCrudService<ID, M, MD, MID, R extends JpaRepositor
 		return validator;
 	}
 
+	public R getRepo() {
+		return repo;
+	}
+
 	public boolean validateInData(MID inDto) {
 
 //		if () return false;

@@ -7,11 +7,13 @@ import com.aonufrei.healthdiary.repositories.PostRepository;
 import com.aonufrei.healthdiary.utils.ModelDtoUtil;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Validator;
+
 
 @Service
 public class PostService extends AbstractCrudService<Integer, Post, PostDto, PostInDto, PostRepository> {
 
-	public PostService(PostRepository repo) {
+	public PostService(PostRepository repo, Validator validator) {
 		super(repo, ModelDtoUtil::inDtoToModel, ModelDtoUtil::modelToDto, ModelDtoUtil::updateModel);
 		setValidator(validator);
 	}

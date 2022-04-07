@@ -31,6 +31,11 @@ public class FoodReportInDto {
 	@NotNull(message = "metric_id field is required")
 	private Integer metricId;
 
+	@Schema(description = "The author of food report")
+	@JsonProperty("person_id")
+	@NotNull(message = "person_id field is required")
+	private Integer personId;
+
 	@Schema(description = "Identifies the meal")
 	@NotNull(message = "type field is required")
 	private FoodReportType type;

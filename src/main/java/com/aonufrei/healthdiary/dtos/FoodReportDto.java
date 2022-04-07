@@ -35,6 +35,11 @@ public class FoodReportDto {
 	@NotNull(message = "type field is required")
 	private FoodReportType type;
 
+	@Schema(description = "The author of food report")
+	@JsonProperty("person_id")
+	@NotNull(message = "person_id field is required")
+	private Integer personId;
+
 	@Schema(description = "When food report was created")
 	@JsonProperty("reported_date")
 	private LocalDate reportedDate;

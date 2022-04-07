@@ -49,6 +49,7 @@ public class ModelDtoUtil {
 				.foodId(inDto.getFoodId())
 				.metricId(inDto.getMetricId())
 				.type(inDto.getType())
+				.personId(inDto.getPersonId())
 				.reportedDate(inDto.getReportedDate())
 				.build();
 	}
@@ -130,6 +131,7 @@ public class ModelDtoUtil {
 		Optional.ofNullable(inDto.getFoodId()).ifPresent(model::setFoodId);
 		Optional.ofNullable(inDto.getMetricId()).ifPresent(model::setMetricId);
 		Optional.ofNullable(inDto.getType()).ifPresent(model::setType);
+		Optional.ofNullable(inDto.getPersonId()).ifPresent(model::setPersonId);
 		Optional.ofNullable(inDto.getReportedDate()).ifPresent(model::setReportedDate);
 	}
 
@@ -217,6 +219,7 @@ public class ModelDtoUtil {
 				.amount(model.getAmount())
 				.metric(model.getMetric() != null ? modelToDto(model.getMetric()) : null)
 				.type(model.getType())
+				.personId(model.getPersonId())
 				.reportedDate(model.getReportedDate())
 				.modifiedAt(model.getModifiedAt())
 				.build();

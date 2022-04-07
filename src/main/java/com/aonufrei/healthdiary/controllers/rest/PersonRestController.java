@@ -2,6 +2,9 @@ package com.aonufrei.healthdiary.controllers.rest;
 
 import com.aonufrei.healthdiary.dtos.PersonDto;
 import com.aonufrei.healthdiary.dtos.PersonInDto;
+import com.aonufrei.healthdiary.dtos.PersonWithBodyReportDto;
+import com.aonufrei.healthdiary.dtos.PersonWithBodyReportInDto;
+import com.aonufrei.healthdiary.exceptions.DataValidationException;
 import com.aonufrei.healthdiary.services.PersonService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -9,8 +12,10 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.ConstraintViolation;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import static com.aonufrei.healthdiary.configurations.ApplicationConfigs.DEFAULT_LIST_RESULT_PAGE_SIZE;
 
@@ -68,4 +73,34 @@ public class PersonRestController {
 		service.delete(id);
 		return true;
 	}
+
+	@Operation(summary = "Get person with body report")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the person you want to get details")
+	})
+	@GetMapping("/with-report/{id}")
+	public PersonWithBodyReportDto getPersonWithBodyReport(@PathVariable("id") Integer personId) {
+		return service.getPersonWithBodyReports(personId);
+	}
+
+	@Operation(summary = "Adds person with body report")
+	@PostMapping("/with-report")
+	public Integer addPersonWithBodyReport(@RequestBody PersonWithBodyReportInDto inDto) {
+		Set<ConstraintViolation<PersonWithBodyReportInDto>> generalErrors = service.getValidator().validate(inDto);
+		generalErrors.stream().findFirst().ifPresent(error -> {
+			throw new DataValidationException(error.getMessage());
+		});
+		Set<ConstraintViolation<PersonInDto>> personErrors = service.getValidator().validate(inDto.getPerson());
+		personErrors.stream().findFirst().ifPresent(error -> {
+			throw new DataValidationException(error.getMessage());
+		});
+		if (inDto.getWeight() < 30 || inDto.getWeight() > 400) {
+			throw new DataValidationException("weight is out of range (30 - 400)");
+		}
+		if (inDto.getHeight() < 30 || inDto.getHeight() > 300) {
+			throw new DataValidationException("height is out of range (30 - 300)");
+		}
+		return service.addPersonWithBodyReports(inDto);
+	}
+
 }

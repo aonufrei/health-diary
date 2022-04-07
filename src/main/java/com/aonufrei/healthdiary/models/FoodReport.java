@@ -32,6 +32,13 @@ public class FoodReport {
 	private FoodReportType type;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "person_id", insertable = false, updatable = false)
+	private Person person;
+
+	@Column(name = "person_id")
+	private Integer personId;
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "metric_id", updatable = false, insertable = false)
 	private Metric metric;
 

@@ -7,11 +7,13 @@ import com.aonufrei.healthdiary.repositories.FoodRepository;
 import com.aonufrei.healthdiary.utils.ModelDtoUtil;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Validator;
+
 
 @Service
 public class FoodService extends AbstractCrudService<Integer, Food, FoodDto, FoodInDto, FoodRepository> {
 
-	public FoodService(FoodRepository repo) {
+	public FoodService(FoodRepository repo, Validator validator) {
 		super(repo, ModelDtoUtil::inDtoToModel, ModelDtoUtil::modelToDto, ModelDtoUtil::updateModel);
 		setValidator(validator);
 	}

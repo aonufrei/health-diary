@@ -7,11 +7,13 @@ import com.aonufrei.healthdiary.repositories.LikeRepository;
 import com.aonufrei.healthdiary.utils.ModelDtoUtil;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Validator;
+
 
 @Service
 public class LikeService extends AbstractCrudService<Integer, Like, LikeDto, LikeInDto, LikeRepository> {
 
-	public LikeService(LikeRepository repo) {
+	public LikeService(LikeRepository repo, Validator validator) {
 		super(repo, ModelDtoUtil::inDtoToModel, ModelDtoUtil::modelToDto, ModelDtoUtil::updateModel);
 		setValidator(validator);
 	}
