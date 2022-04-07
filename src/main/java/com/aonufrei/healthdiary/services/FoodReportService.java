@@ -24,4 +24,8 @@ public class FoodReportService extends AbstractCrudService<Integer, FoodReport, 
 		return repo.getFoodReportByPersonAndMeal(personId, meal, date);
 	}
 
+	public List<FoodReport> getFoodReportByPersonAndMeal(Integer personId, LocalDate fromDate, LocalDate toDate) {
+		return repo.getFoodReportByPersonAndMeal(personId, fromDate, toDate);
+	}
+
 }

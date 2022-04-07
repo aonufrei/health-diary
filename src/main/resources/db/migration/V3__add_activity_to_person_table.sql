@@ -1,0 +1,1 @@
+alter table persons add column activity tinyint not null after gender;

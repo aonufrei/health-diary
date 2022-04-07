@@ -1,13 +1,14 @@
 package com.aonufrei.healthdiary.services;
 
+import com.aonufrei.healthdiary.dtos.CaloriesPerDay;
 import com.aonufrei.healthdiary.dtos.DailyReportDto;
 import com.aonufrei.healthdiary.models.FoodReport;
 import com.aonufrei.healthdiary.models.FoodReportType;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -20,6 +21,7 @@ public class DailyReportService {
 		this.foodReportService = foodReportService;
 	}
 
+	@Transactional
 	public DailyReportDto getDailyReportCalories(Integer personId, LocalDate date) {
 		List<FoodReport> breakfastFood = foodReportService.getFoodReportByPersonAndMeal(personId, FoodReportType.BREAKFAST, date);
 		List<FoodReport> lunchFood = foodReportService.getFoodReportByPersonAndMeal(personId, FoodReportType.LUNCH, date);
@@ -54,6 +56,25 @@ public class DailyReportService {
 				.fullFat(Math.round(overallFat))
 				.build();
 
+	}
+
+	public List<CaloriesPerDay> getDailyReportCalories(Integer personId, LocalDate fromDate, LocalDate toDate) {
+		List<FoodReport> reportsByDays = foodReportService.getFoodReportByPersonAndMeal(personId, fromDate, toDate);
+
+		List<CaloriesPerDay> caloriesPerDays = new ArrayList<>();
+		for (LocalDate temp = fromDate; temp.isBefore(toDate); temp = temp.plusDays(1)) {
+			LocalDate finalTemp = temp;
+			List<FoodReport> foodReportForDay = reportsByDays.stream().filter(it -> it.getReportedDate().equals(finalTemp)).collect(Collectors.toList());
+
+			Float calories = foodReportForDay.stream()
+					.map(it -> it.getAmount() * it.getMetric().getCalories())
+					.reduce(Float::sum)
+					.orElse(0f);
+
+			caloriesPerDays.add(CaloriesPerDay.builder().calories(Math.round(calories)).date(temp).build());
+		}
+		caloriesPerDays.sort(Comparator.comparing(CaloriesPerDay::getDate).reversed());
+		return caloriesPerDays;
 	}
 
 }

@@ -27,6 +27,10 @@ public class Person {
 
 	private LocalDate dob;
 
+	private Gender gender;
+
+	private PhysicalActivity activity;
+
 	private String imagePath;
 
 	@OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

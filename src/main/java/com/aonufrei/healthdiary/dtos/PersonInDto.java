@@ -1,5 +1,7 @@
 package com.aonufrei.healthdiary.dtos;
 
+import com.aonufrei.healthdiary.models.Gender;
+import com.aonufrei.healthdiary.models.PhysicalActivity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
@@ -30,6 +32,14 @@ public class PersonInDto {
 	@NotNull(message = "dob field is required")
 	@Schema(description = "Date of birth")
 	private LocalDate dob;
+
+	@NotNull(message = "gender field is required")
+	@Schema(description = "Gender of the person")
+	private Gender gender;
+
+	@NotNull(message = "activity field is required")
+	@Schema(description = "how often the person do physical activity")
+	private PhysicalActivity activity;
 
 	@Schema(description = "Icon on the person account")
 	@JsonProperty("image_path")

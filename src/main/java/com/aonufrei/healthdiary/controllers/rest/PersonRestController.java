@@ -76,7 +76,7 @@ public class PersonRestController {
 
 	@Operation(summary = "Get person with body report")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the person you want to get details")
+			@Parameter(name = "id", description = "Id of the person you want to get details for")
 	})
 	@GetMapping("/with-report/{id}")
 	public PersonWithBodyReportDto getPersonWithBodyReport(@PathVariable("id") Integer personId) {
@@ -102,5 +102,24 @@ public class PersonRestController {
 		}
 		return service.addPersonWithBodyReports(inDto);
 	}
+
+	@Operation(description = "Get calories required for person")
+	@Parameters({
+			@Parameter(name = "person_id", description = "Id of the person you want to get calories details")
+	})
+	@GetMapping("/calories")
+	public Integer getCaloriesRequired(@RequestParam("person_id") Integer personId) {
+		return service.calculateRequiredCalories(personId);
+	}
+
+	@Operation(description = "Get calories required for person to lose weight")
+	@Parameters({
+			@Parameter(name = "person_id", description = "Id of the person you want to get calories details")
+	})
+	@GetMapping("/calories/deficit")
+	public Integer getCaloriesRequiredWithDeficit(@RequestParam("person_id") Integer personId) {
+		return service.calculateRequiredCaloriesWithDeficit(personId);
+	}
+
 
 }

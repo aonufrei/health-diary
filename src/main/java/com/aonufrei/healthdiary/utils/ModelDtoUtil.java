@@ -83,6 +83,8 @@ public class ModelDtoUtil {
 				.name(inDto.getName())
 				.email(inDto.getEmail())
 				.dob(inDto.getDob())
+				.gender(inDto.getGender())
+				.activity(inDto.getActivity())
 				.imagePath(inDto.getImagePath())
 				.build();
 	}
@@ -159,6 +161,8 @@ public class ModelDtoUtil {
 		Optional.ofNullable(inDto.getName()).ifPresent(model::setName);
 		Optional.ofNullable(inDto.getEmail()).ifPresent(model::setEmail);
 		Optional.ofNullable(inDto.getDob()).ifPresent(model::setDob);
+		Optional.ofNullable(inDto.getGender()).ifPresent(model::setGender);
+		Optional.ofNullable(inDto.getActivity()).ifPresent(model::setActivity);
 		Optional.ofNullable(inDto.getImagePath()).ifPresent(model::setImagePath);
 	}
 
@@ -261,6 +265,8 @@ public class ModelDtoUtil {
 				.name(model.getName())
 				.email(model.getEmail())
 				.dob(model.getDob())
+				.gender(model.getGender())
+				.activity(model.getActivity())
 				.imagePath(model.getImagePath())
 				.createdAt(model.getCreatedAt())
 				.modifiedAt(model.getModifiedAt())

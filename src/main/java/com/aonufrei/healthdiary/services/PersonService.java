@@ -4,6 +4,7 @@ import com.aonufrei.healthdiary.dtos.*;
 import com.aonufrei.healthdiary.exceptions.DataValidationException;
 import com.aonufrei.healthdiary.models.BodyReport;
 import com.aonufrei.healthdiary.models.BodyReportType;
+import com.aonufrei.healthdiary.models.Gender;
 import com.aonufrei.healthdiary.models.Person;
 import com.aonufrei.healthdiary.repositories.PersonRepository;
 import com.aonufrei.healthdiary.utils.ModelDtoUtil;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Validator;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 
 @Service
@@ -25,6 +28,30 @@ public class PersonService extends AbstractCrudService<Integer, Person, PersonDt
 		setValidator(validator);
 	}
 
+	public Integer calculateRequiredCalories(Integer personId) {
+		PersonWithBodyReportDto person = getPersonWithBodyReports(personId);
+		return Math.toIntExact(Math.round(calculateBMR(person) * person.getPerson().getActivity().getRatio()));
+	}
+
+	public Integer calculateRequiredCaloriesWithDeficit(Integer personId) {
+		return Math.toIntExact(Math.round(calculateRequiredCalories(personId).doubleValue() * 0.7));
+	}
+
+	public Double calculateBMR(PersonWithBodyReportDto person) {
+		if (person.getPerson().getGender() == Gender.FEMALE) {
+			return 65.51 + (9.563 * person.getWeight()) + (1.850 * person.getHeight()) - (4.676 * getAge(person.getPerson()));
+		} else {
+			return 66.47 + (13.75 * person.getWeight()) + (5.003 * person.getHeight()) - (6.755 * getAge(person.getPerson()));
+		}
+	}
+
+	public Integer getAge(PersonDto person) {
+		return Math.toIntExact(ChronoUnit.YEARS.between(person.getDob(), LocalDate.now()));
+	}
+
+	public Integer getAge(Person person) {
+		return Math.toIntExact(ChronoUnit.YEARS.between(person.getDob(), LocalDate.now()));
+	}
 
 	@Transactional
 	public Integer addPersonWithBodyReports(PersonWithBodyReportInDto inDto) {
