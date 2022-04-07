@@ -23,7 +23,6 @@ public class AimInDto {
 
 	@Schema(description = "Target weight in specified aim")
 	@JsonProperty("target_weight")
-	@Size(min = 30, max = 400, message = "target_weight field is out of range (30 - 400)")
 	@NotNull(message = "target_weight field is required")
 	private Float targetWeight;
 

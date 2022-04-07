@@ -20,7 +20,6 @@ import java.time.LocalDateTime;
 public class BodyReportInDto {
 
 	@Schema(description = "Value of the report")
-	@Size(min = 30, max = 400, message = "value field is out of range (30 - 400)")
 	private Float value;
 
 	@Schema(description = "Type of the report")

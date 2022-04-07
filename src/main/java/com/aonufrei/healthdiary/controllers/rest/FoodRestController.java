@@ -2,6 +2,7 @@ package com.aonufrei.healthdiary.controllers.rest;
 
 import com.aonufrei.healthdiary.dtos.FoodDto;
 import com.aonufrei.healthdiary.dtos.FoodInDto;
+import com.aonufrei.healthdiary.dtos.FoodWithMetricsInDto;
 import com.aonufrei.healthdiary.services.FoodService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -39,6 +40,12 @@ public class FoodRestController {
 	@PostMapping
 	public Integer addFood(@RequestBody FoodInDto inDto) {
 		return service.add(inDto).getId();
+	}
+
+	@Operation(summary = "Create food with metrics")
+	@PostMapping("/with-metrics")
+	public boolean addFood(@RequestBody FoodWithMetricsInDto inDto) {
+		return service.addWithMetrics(inDto);
 	}
 
 	@Operation(summary = "Update existing food")

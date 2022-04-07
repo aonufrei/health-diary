@@ -42,7 +42,7 @@ public abstract class AbstractCrudService<ID, M, MD, MID, R extends JpaRepositor
 	}
 
 	public M add(MID inDto) {
-		if (!validateInData(inDto)) return null;
+		if (!validateOnInsert(inDto)) return null;
 		M model = inDtoToModelFunction.apply(inDto);
 		return repo.save(model);
 	}
@@ -61,7 +61,7 @@ public abstract class AbstractCrudService<ID, M, MD, MID, R extends JpaRepositor
 	}
 
 	public boolean update(ID id, MID inDto) {
-		if (id == null || !validateInData(inDto)) {
+		if (id == null || !validateOnUpdate(inDto)) {
 			return false;
 		}
 		M existing = repo.findById(id).orElse(null);
@@ -85,17 +85,22 @@ public abstract class AbstractCrudService<ID, M, MD, MID, R extends JpaRepositor
 		return repo;
 	}
 
-	public boolean validateInData(MID inDto) {
+	public boolean validateOnInsert(MID inDto) {
+		if (inDto == null) return false;
 
-//		if () return false;
-//		if (validator != null) {
-//			Set<ConstraintViolation<MID>> validationErrors = validator.validate(inDto);
-//			validationErrors.stream().findFirst().ifPresent(error -> {
-//				throw new DataValidationException(error.getMessage());
-//			});
-//		}
+		if (validator != null) {
+			Set<ConstraintViolation<MID>> validationErrors = validator.validate(inDto);
+			validationErrors.stream().findFirst().ifPresent(error -> {
+				throw new DataValidationException(error.getMessage());
+			});
+		}
 
-		return inDto != null;
+		return true;
+	}
+
+	public boolean validateOnUpdate(MID inDto) {
+		if (inDto == null) return false;
+		return true;
 	}
 
 }

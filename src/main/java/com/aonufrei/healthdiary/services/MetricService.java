@@ -8,6 +8,8 @@ import com.aonufrei.healthdiary.utils.ModelDtoUtil;
 import org.springframework.stereotype.Service;
 
 import javax.validation.Validator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -16,6 +18,11 @@ public class MetricService extends AbstractCrudService<Integer, Metric, MetricDt
 	public MetricService(MetricRepository repo, Validator validator) {
 		super(repo, ModelDtoUtil::inDtoToModel, ModelDtoUtil::modelToDto, ModelDtoUtil::updateModel);
 		setValidator(validator);
+	}
+
+	public void addMany(List<MetricInDto> metrics) {
+		List<Metric> metricModels = metrics.stream().map(ModelDtoUtil::inDtoToModel).collect(Collectors.toList());
+		repo.saveAll(metricModels);
 	}
 
 }
