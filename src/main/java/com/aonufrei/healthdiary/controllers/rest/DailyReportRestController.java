@@ -29,7 +29,7 @@ public class DailyReportRestController {
 
 	@Operation(description = "Get daily report")
 	@Parameters({
-			@Parameter(name = "personId", description = "Id of the person get calories report"),
+			@Parameter(name = "person", description = "Id of the person get calories report"),
 			@Parameter(name = "date", description = "Date to get calories report")
 	})
 	@GetMapping("/day")
@@ -42,9 +42,9 @@ public class DailyReportRestController {
 
 	@Operation(description = "Get report for date range")
 	@Parameters({
-			@Parameter(name = "personId", description = "Id of the person get calories report"),
-			@Parameter(name = "fromDate", description = "From date of the range"),
-			@Parameter(name = "toDate", description = "To date of the range")
+			@Parameter(name = "person", description = "Id of the person get calories report"),
+			@Parameter(name = "from_date", description = "From date of the range"),
+			@Parameter(name = "to_date", description = "To date of the range")
 	})
 	@GetMapping("/days")
 	public List<CaloriesPerDay> getCaloriesByDays(@RequestParam("person") Integer personId, @RequestParam("from_date") String stringFromDate,

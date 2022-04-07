@@ -2,6 +2,7 @@ package com.aonufrei.healthdiary.controllers.rest;
 
 import com.aonufrei.healthdiary.dtos.FoodReportDto;
 import com.aonufrei.healthdiary.dtos.FoodReportInDto;
+import com.aonufrei.healthdiary.exceptions.DataValidationException;
 import com.aonufrei.healthdiary.services.FoodReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -9,6 +10,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,6 +69,26 @@ public class FoodReportRestController {
 	public boolean deleteFoodReport(@PathVariable("id") Integer id) {
 		service.delete(id);
 		return true;
+	}
+
+	@Operation(summary = "Get all food reports by day")
+	@Parameters({
+			@Parameter(name = "person", description = "Id of person who reported food"),
+			@Parameter(name = "date", description = "Date to get food reports")
+	})
+	@GetMapping("/day")
+	public List<FoodReportDto> getFoodReportByPersonIdAndDay(@RequestParam(name = "person") Integer personId, @RequestParam(name = "date") String stringDate) {
+		return service.getAllFoodReportsByPersonByDayDto(personId, convertToDate(stringDate, "Date is required"));
+	}
+
+	public static LocalDate convertToDate(String stringDate, String message) {
+		LocalDate date;
+		try {
+			date = LocalDate.parse(stringDate);
+		} catch (Exception e) {
+			throw new DataValidationException(message);
+		}
+		return date;
 	}
 
 }
