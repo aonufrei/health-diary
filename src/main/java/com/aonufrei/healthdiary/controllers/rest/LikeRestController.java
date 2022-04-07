@@ -43,7 +43,7 @@ public class LikeRestController {
 
 	@Operation(summary = "Update like")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to update")
+			@Parameter(name = "id", description = "Id of the like you want to update")
 	})
 	@PutMapping("/{id}")
 	public boolean updateLike(@RequestBody LikeInDto inDto, @PathVariable("id") Integer id) {
@@ -52,7 +52,7 @@ public class LikeRestController {
 
 	@Operation(summary = "Get like by id")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to get")
+			@Parameter(name = "id", description = "Id of the like you want to get")
 	})
 	@GetMapping("/{id}")
 	public LikeDto getLikeById(@PathVariable("id") Integer id) {
@@ -61,7 +61,7 @@ public class LikeRestController {
 
 	@Operation(summary = "Delete like by id")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to delete")
+			@Parameter(name = "id", description = "Id of the like you want to delete")
 	})
 	@DeleteMapping("/{id}")
 	public boolean deleteLike(@PathVariable("id") Integer id) {

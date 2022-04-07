@@ -43,7 +43,7 @@ public class FoodReportRestController {
 
 	@Operation(summary = "Update existing food report")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to update")
+			@Parameter(name = "id", description = "Id of the food report you want to update")
 	})
 	@PutMapping("/{id}")
 	public boolean updateFoodReport(@RequestBody FoodReportInDto inDto, @PathVariable("id") Integer id) {
@@ -52,7 +52,7 @@ public class FoodReportRestController {
 
 	@Operation(summary = "Get food report by id")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to get")
+			@Parameter(name = "id", description = "Id of the food report you want to get")
 	})
 	@GetMapping("/{id}")
 	public FoodReportDto getFoodReportById(@PathVariable("id") Integer id) {
@@ -61,7 +61,7 @@ public class FoodReportRestController {
 
 	@Operation(summary = "Delete food report by id")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to delete")
+			@Parameter(name = "id", description = "Id of the food report you want to delete")
 	})
 	@DeleteMapping("/{id}")
 	public boolean deleteFoodReport(@PathVariable("id") Integer id) {

@@ -44,7 +44,7 @@ public class BodyReportRestController {
 
 	@Operation(summary = "Update existing body report")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to update")
+			@Parameter(name = "id", description = "Id of the body report you want to update")
 	})
 	@PutMapping("/{id}")
 	public boolean updateBodyReport(@RequestBody BodyReportInDto inDto, @PathVariable Integer id) {
@@ -53,7 +53,7 @@ public class BodyReportRestController {
 
 	@Operation(summary = "Get body report by id")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to get")
+			@Parameter(name = "id", description = "Id of the body report you want to get")
 	})
 	@GetMapping("/{id}")
 	public BodyReportDto getBodyReportById(@PathVariable Integer id) {
@@ -62,7 +62,7 @@ public class BodyReportRestController {
 
 	@Operation(summary = "Delete body report by id")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to delete")
+			@Parameter(name = "id", description = "Id of the body report you want to delete")
 	})
 	@DeleteMapping("/{id}")
 	public Boolean deleteBodyReport(@PathVariable Integer id) {

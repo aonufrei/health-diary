@@ -43,7 +43,7 @@ public class PersonRestController {
 
 	@Operation(summary = "Update existing person")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to update")
+			@Parameter(name = "id", description = "Id of the person you want to update")
 	})
 	@PutMapping("/{id}")
 	public boolean updatePerson(@RequestBody PersonInDto inDto, @PathVariable Integer id) {
@@ -52,7 +52,7 @@ public class PersonRestController {
 
 	@Operation(summary = "Get person by id")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to get")
+			@Parameter(name = "id", description = "Id of the person you want to get")
 	})
 	@GetMapping("/{id}")
 	public PersonDto getPersonById(@PathVariable Integer id) {
@@ -61,7 +61,7 @@ public class PersonRestController {
 
 	@Operation(summary = "Delete person by id")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to delete")
+			@Parameter(name = "id", description = "Id of the person you want to delete")
 	})
 	@DeleteMapping("/{id}")
 	public Boolean deletePerson(@PathVariable Integer id) {

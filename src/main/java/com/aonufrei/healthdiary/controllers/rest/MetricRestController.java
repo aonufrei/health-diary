@@ -43,7 +43,7 @@ public class MetricRestController {
 
 	@Operation(summary = "Update existing metric")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to update")
+			@Parameter(name = "id", description = "Id of the metric you want to update")
 	})
 	@PutMapping("/{id}")
 	public boolean updateMetric(@RequestBody MetricInDto inDto, @PathVariable("id") Integer id) {
@@ -52,7 +52,7 @@ public class MetricRestController {
 
 	@Operation(summary = "Get metric by id")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to get")
+			@Parameter(name = "id", description = "Id of the metric you want to get")
 	})
 	@GetMapping("/{id}")
 	public MetricDto getMetricById(@PathVariable("id") Integer id) {
@@ -61,7 +61,7 @@ public class MetricRestController {
 
 	@Operation(summary = "Delete metric by id")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to delete")
+			@Parameter(name = "id", description = "Id of the metric you want to delete")
 	})
 	@DeleteMapping("/{id}")
 	public boolean deleteMetric(@PathVariable("id") Integer id) {

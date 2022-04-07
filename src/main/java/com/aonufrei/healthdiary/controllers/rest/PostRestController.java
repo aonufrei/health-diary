@@ -38,7 +38,7 @@ public class PostRestController {
 
 	@Operation(summary = "Get post by id")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to update")
+			@Parameter(name = "id", description = "Id of the post you want to update")
 	})
 	@GetMapping("/{id}")
 	public PostDto getPostById(@PathVariable("id") Integer id) {
@@ -54,7 +54,7 @@ public class PostRestController {
 
 	@Operation(summary = "Update existing post")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to get")
+			@Parameter(name = "id", description = "Id of the post you want to get")
 	})
 	@PutMapping("/{id}")
 	public boolean updatePost(@RequestBody PostInDto inDto, @PathVariable("id") Integer id) {
@@ -63,7 +63,7 @@ public class PostRestController {
 
 	@Operation(summary = "Delete post by id")
 	@Parameters({
-			@Parameter(name = "id", description = "Id of the aim you want to delete")
+			@Parameter(name = "id", description = "Id of the post you want to delete")
 	})
 	@DeleteMapping("/{id}")
 	public boolean deletePost(@PathVariable("id") Integer id) {

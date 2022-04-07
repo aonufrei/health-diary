@@ -83,15 +83,15 @@ public abstract class AbstractCrudService<ID, M, MD, MID, R extends JpaRepositor
 
 	public boolean validateInData(MID inDto) {
 
-		if (inDto == null) return false;
-		if (validator != null) {
-			Set<ConstraintViolation<MID>> validationErrors = validator.validate(inDto);
-			validationErrors.stream().findFirst().ifPresent(error -> {
-				throw new DataValidationException(error.getMessage());
-			});
-		}
+//		if () return false;
+//		if (validator != null) {
+//			Set<ConstraintViolation<MID>> validationErrors = validator.validate(inDto);
+//			validationErrors.stream().findFirst().ifPresent(error -> {
+//				throw new DataValidationException(error.getMessage());
+//			});
+//		}
 
-		return true;
+		return inDto != null;
 	}
 
 }
