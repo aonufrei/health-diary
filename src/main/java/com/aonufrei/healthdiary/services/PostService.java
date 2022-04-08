@@ -21,6 +21,10 @@ public class PostService extends AbstractCrudService<Integer, Post, PostDto, Pos
 		setValidator(validator);
 	}
 
+	public List<PostDto> getFeedsForPerson(Integer personId, Pageable pageable) {
+		return super.repo.findAll(pageable).stream().map(modelToDtoFunction).collect(Collectors.toList());
+	}
+
 	public List<PostDto> getPostsByPerson(Integer personId, Pageable pageable) {
 		return super.repo.getAllByAuthorId(personId, pageable).stream().map(modelToDtoFunction).collect(Collectors.toList());
 	}

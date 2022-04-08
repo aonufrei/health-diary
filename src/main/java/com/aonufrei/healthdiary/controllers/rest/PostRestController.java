@@ -87,4 +87,18 @@ public class PostRestController {
 				.orElse(DEFAULT_LIST_RESULT_PAGE_SIZE), Sort.by(Sort.Direction.DESC, "createdAt")));
 	}
 
+	@Operation(summary = "Get feeds for person")
+	@GetMapping("/feeds/{id}")
+	@Parameters(
+			{
+					@Parameter(name = "id", description = "Id of the person to get feeds"),
+					@Parameter(name = "page", description = "Result page number"),
+					@Parameter(name = "size", description = "The size of the requested page. Default value is 10")
+			}
+	)
+	public List<PostDto> getFeedsForPerson(@PathVariable("id") Integer personId, @RequestParam("page") Integer page, @RequestParam(value = "size", required = false) Integer pageSize) {
+		return service.getFeedsForPerson(personId, PageRequest.of(page, Optional.ofNullable(pageSize)
+				.orElse(DEFAULT_LIST_RESULT_PAGE_SIZE), Sort.by(Sort.Direction.DESC, "createdAt")));
+	}
+
 }
