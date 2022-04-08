@@ -6,6 +6,7 @@ import com.aonufrei.healthdiary.dtos.PersonWithBodyReportDto;
 import com.aonufrei.healthdiary.dtos.PersonWithBodyReportInDto;
 import com.aonufrei.healthdiary.exceptions.DataValidationException;
 import com.aonufrei.healthdiary.services.PersonService;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -105,21 +106,14 @@ public class PersonRestController {
 
 	@Operation(description = "Get calories required for person")
 	@Parameters({
-			@Parameter(name = "person_id", description = "Id of the person you want to get calories details")
+			@Parameter(name = "id", description = "Id of the person you want to get calories details")
 	})
-	@GetMapping("/calories")
-	public Integer getCaloriesRequired(@RequestParam("person_id") Integer personId) {
+	@GetMapping("/calories/{id}")
+	public Integer getCaloriesRequired(@PathVariable("id") Integer personId, @RequestParam(value = "deficit", required = false) Boolean showDeficit) {
+		if (showDeficit != null && showDeficit) {
+			return service.calculateRequiredCaloriesWithDeficit(personId);
+		}
 		return service.calculateRequiredCalories(personId);
 	}
-
-	@Operation(description = "Get calories required for person to lose weight")
-	@Parameters({
-			@Parameter(name = "person_id", description = "Id of the person you want to get calories details")
-	})
-	@GetMapping("/calories/deficit")
-	public Integer getCaloriesRequiredWithDeficit(@RequestParam("person_id") Integer personId) {
-		return service.calculateRequiredCaloriesWithDeficit(personId);
-	}
-
 
 }
