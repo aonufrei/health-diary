@@ -69,4 +69,15 @@ public class LikeRestController {
 		return true;
 	}
 
+	@Operation(summary = "Delete like by person id and post id")
+	@Parameters({
+			@Parameter(name = "person_id", description = "Id of the person"),
+			@Parameter(name = "post_id", description = "Id of the post")
+	})
+	@DeleteMapping
+	public boolean deleteLike(@RequestParam("person_id") Integer personId, @RequestParam("post_id") Integer postId) {
+		service.deleteLikeByPersonAndPost(personId, postId);
+		return true;
+	}
+
 }
