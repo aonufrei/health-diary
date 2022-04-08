@@ -3,6 +3,7 @@ package com.aonufrei.healthdiary.controllers.rest;
 import com.aonufrei.healthdiary.dtos.BodyReportDto;
 import com.aonufrei.healthdiary.dtos.BodyReportInDto;
 import com.aonufrei.healthdiary.dtos.PersonDto;
+import com.aonufrei.healthdiary.models.BodyReportType;
 import com.aonufrei.healthdiary.services.BodyReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -69,4 +70,23 @@ public class BodyReportRestController {
 		service.delete(id);
 		return true;
 	}
+
+	@Operation(summary = "Get weight body reports by person id")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the person you want to get body report")
+	})
+	@GetMapping("/weight/{id}")
+	public List<BodyReportDto> getWeightBodyReportsByPerson(@PathVariable Integer id) {
+		return service.getBodyReportsByPersonAndType(id, BodyReportType.WEIGHT);
+	}
+
+	@Operation(summary = "Get weight body reports by person id")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the person you want to get body report")
+	})
+	@GetMapping("/height/{id}")
+	public List<BodyReportDto> getHeightBodyReportsByPerson(@PathVariable Integer id) {
+		return service.getBodyReportsByPersonAndType(id, BodyReportType.HEIGHT);
+	}
+
 }

@@ -79,10 +79,10 @@ public class PersonService extends AbstractCrudService<Integer, Person, PersonDt
 	@Transactional
 	public PersonWithBodyReportDto getPersonWithBodyReports(Integer personId) {
 		Person person = repo.findById(personId).orElseThrow(() -> new DataValidationException("Person was not found"));
-		BodyReport heightReport = bodyReportService.getRepo().getBodyReportByPersonId(person.getId(), BodyReportType.HEIGHT)
-				.orElseThrow(() -> new DataValidationException("Height report was not found"));
-		BodyReport weightReport = bodyReportService.getRepo().getBodyReportByPersonId(person.getId(), BodyReportType.WEIGHT)
-				.orElseThrow(() -> new DataValidationException("Weight report was not found"));
+		BodyReport heightReport = bodyReportService.getRepo().getBodyReportByPersonIdAndType(person.getId(), BodyReportType.HEIGHT)
+				.stream().findFirst().orElseThrow(() -> new DataValidationException("Height report was not found"));
+		BodyReport weightReport = bodyReportService.getRepo().getBodyReportByPersonIdAndType(person.getId(), BodyReportType.WEIGHT)
+				.stream().findFirst().orElseThrow(() -> new DataValidationException("Weight report was not found"));
 
 		return PersonWithBodyReportDto.builder()
 				.person(modelToDtoFunction.apply(person))

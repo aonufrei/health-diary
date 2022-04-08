@@ -197,6 +197,7 @@ public class ModelDtoUtil {
 				.value(model.getValue())
 				.type(model.getType())
 				.personId(model.getPersonId())
+				.loggedTime(model.getLoggedTime())
 				.createdAt(model.getCreatedAt())
 				.modifiedAt(model.getModifiedAt())
 				.build();

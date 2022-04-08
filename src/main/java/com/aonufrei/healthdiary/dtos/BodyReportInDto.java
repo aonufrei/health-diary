@@ -34,6 +34,6 @@ public class BodyReportInDto {
 	@Schema(description = "The datetime when body report was created")
 	@JsonProperty("logged_time")
 	@NotNull(message = "logged_time is required")
-	private LocalDateTime loggedTime;
+	private LocalDateTime loggedTime = LocalDateTime.now();
 
 }
