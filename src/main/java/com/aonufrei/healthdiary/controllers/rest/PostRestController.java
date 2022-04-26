@@ -77,7 +77,7 @@ public class PostRestController {
 	@GetMapping("/person/{id}")
 	@Parameters(
 			{
-					@Parameter(name = "id", description = "Id of the person to get feeds"),
+					@Parameter(name = "id", description = "Id of the person to get posts"),
 					@Parameter(name = "page", description = "Result page number"),
 					@Parameter(name = "size", description = "The size of the requested page. Default value is 10")
 			}

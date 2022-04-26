@@ -27,12 +27,17 @@ public class AimRestController {
 
 	@Operation(summary = "Get all aims")
 	@Parameters({
+			@Parameter(name = "person_id", description = "Person id to get aims"),
 			@Parameter(name = "page", description = "Result page number"),
 			@Parameter(name = "size", description = "The size of the requested page. Default value is 10")
 	})
 	@GetMapping
-	public List<AimDto> getAllAims(@RequestParam("page") Integer page,
+	public List<AimDto> getAllAims(@RequestParam(name = "person_id", required = false) Integer personId,
+	                               @RequestParam("page") Integer page,
 	                               @RequestParam(name = "size", required = false) Integer pageSize) {
+		if (personId != null) {
+			return service.getAllByPersonId(personId, Optional.ofNullable(pageSize).orElse(DEFAULT_LIST_RESULT_PAGE_SIZE), page);
+		}
 		return service.getAll(page, Optional.ofNullable(pageSize).orElse(DEFAULT_LIST_RESULT_PAGE_SIZE));
 	}
 
