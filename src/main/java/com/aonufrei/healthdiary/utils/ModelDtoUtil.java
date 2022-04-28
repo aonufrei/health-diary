@@ -123,7 +123,6 @@ public class ModelDtoUtil {
 		if (inDto == null) return;
 
 		Optional.ofNullable(inDto.getName()).ifPresent(model::setName);
-
 	}
 
 	public static void updateModel(@NotNull FoodReport model, @NotNull FoodReportInDto inDto) {
@@ -209,7 +208,8 @@ public class ModelDtoUtil {
 		return FoodDto.builder()
 				.id(model.getId())
 				.name(model.getName())
-				.metrics(model.getMetrics().stream().map(ModelDtoUtil::modelToDto).collect(Collectors.toSet()))
+				.metrics(model.getMetrics() == null ? null : model.getMetrics().stream()
+						.map(ModelDtoUtil::modelToDto).collect(Collectors.toSet()))
 				.createdAt(model.getCreatedAt())
 				.modifiedAt(model.getModifiedAt())
 				.build();
@@ -220,9 +220,9 @@ public class ModelDtoUtil {
 
 		return FoodReportDto.builder()
 				.id(model.getId())
-				.food(model.getFood() != null ? modelToDto(model.getFood()) : null)
+				.food(modelToDto(model.getFood()))
 				.amount(model.getAmount())
-				.metric(model.getMetric() != null ? modelToDto(model.getMetric()) : null)
+				.metric(modelToDto(model.getMetric()))
 				.type(model.getType())
 				.personId(model.getPersonId())
 				.reportedDate(model.getReportedDate())
@@ -281,7 +281,7 @@ public class ModelDtoUtil {
 				.id(model.getId())
 				.content(model.getContent())
 				.imagePath(model.getImagePath())
-				.likesCount(model.getLikes().size())
+				.likesCount(model.getLikes() != null ? model.getLikes().size() : 0)
 				.authorId(model.getAuthorId())
 				.createdAt(model.getCreatedAt())
 				.modifiedAt(model.getModifiedAt())

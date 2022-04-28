@@ -3,10 +3,7 @@ package com.aonufrei.healthdiary.dtos;
 import com.aonufrei.healthdiary.models.BodyReportType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -15,6 +12,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class BodyReportInDto {
@@ -34,6 +32,6 @@ public class BodyReportInDto {
 	@Schema(description = "The datetime when body report was created")
 	@JsonProperty("logged_time")
 	@NotNull(message = "logged_time is required")
-	private LocalDateTime loggedTime = LocalDateTime.now();
+	private LocalDateTime loggedTime;
 
 }

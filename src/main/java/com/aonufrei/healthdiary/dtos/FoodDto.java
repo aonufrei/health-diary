@@ -3,10 +3,7 @@ package com.aonufrei.healthdiary.dtos;
 import com.aonufrei.healthdiary.models.Food;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -14,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Data
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class FoodDto {
