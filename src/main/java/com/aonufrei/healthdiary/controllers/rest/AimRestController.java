@@ -65,6 +65,19 @@ public class AimRestController {
 		return service.getById(id);
 	}
 
+	@Operation(summary = "Get aims by person id")
+	@Parameters({
+			@Parameter(name = "id", description = "Id of the person to get aims"),
+			@Parameter(name = "page", description = "Result page number"),
+			@Parameter(name = "size", description = "The size of the requested page. Default value is 10")
+	})
+	@GetMapping("/person/{id}")
+	public List<AimDto> getAimsByPersonId(@PathVariable("id") Integer id,
+	                                @RequestParam("page") Integer page,
+	                                @RequestParam(name = "size", required = false) Integer pageSize) {
+		return service.getAllByPersonId(id, Optional.ofNullable(pageSize).orElse(DEFAULT_LIST_RESULT_PAGE_SIZE), page);
+	}
+
 	@Operation(summary = "Delete aim by id")
 	@Parameters({
 			@Parameter(name = "id", description = "Id of the aim you want to delete")

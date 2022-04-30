@@ -99,8 +99,7 @@ public abstract class AbstractCrudService<ID, M, MD, MID, R extends JpaRepositor
 	}
 
 	public boolean validateOnUpdate(MID inDto) {
-		if (inDto == null) return false;
-		return true;
+		return inDto != null;
 	}
 
 }

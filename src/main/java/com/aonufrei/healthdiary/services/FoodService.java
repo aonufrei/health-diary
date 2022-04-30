@@ -27,19 +27,27 @@ public class FoodService extends AbstractCrudService<Integer, Food, FoodDto, Foo
 	@Transactional
 	public boolean addWithMetrics(FoodWithMetricsInDto inDto) {
 
-		validator.validate(inDto).stream().findFirst().ifPresent(error -> {
-			throw new DataValidationException(error.getMessage());
-		});
+		if (inDto == null) {
+			throw new DataValidationException("Invalid insert model. Valid FoodWithMetricsInDto is required");
+		}
 
-		validator.validate(inDto.getFood()).stream().findFirst().ifPresent(error -> {
-			throw new DataValidationException(error.getMessage());
-		});
+		if (validator != null) {
+			validator.validate(inDto).stream().findFirst().ifPresent(error -> {
+				throw new DataValidationException(error.getMessage());
+			});
 
-		inDto.getMetrics().forEach(it ->
-				validator.validate(it).stream().findFirst().ifPresent(error -> {
-					throw new DataValidationException(error.getMessage());
-				})
-		);
+			validator.validate(inDto.getFood()).stream().findFirst().ifPresent(error -> {
+				throw new DataValidationException(error.getMessage());
+			});
+
+			inDto.getMetrics().forEach(it ->
+					validator.validate(it).stream().findFirst().ifPresent(error -> {
+						throw new DataValidationException(error.getMessage());
+					})
+			);
+		}
+
+
 
 		Integer foodId = add(inDto.getFood()).getId();
 

@@ -425,14 +425,12 @@ public class ModelDtoUtilTest {
 		PersonDto personDto = ModelDtoUtil.modelToDto(person);
 		Aim aim = new Aim();
 		aim.setId(1);
-		aim.setTargetWeight(12f);
 		aim.setPerson(person);
 		aim.setMentioned(LocalDate.now());
 		aim.setStatus(AimStatus.CREATED);
 		aim.setModifiedAt(LocalDateTime.now());
 		AimDto aimDto = new AimDto();
 		aimDto.setId(1);
-		aimDto.setTargetWeight(12f);
 		aimDto.setPersonDto(personDto);
 		aimDto.setMentioned(aim.getMentioned());
 		aimDto.setStatus(AimStatus.CREATED);

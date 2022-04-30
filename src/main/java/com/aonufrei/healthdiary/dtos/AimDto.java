@@ -20,7 +20,7 @@ public class AimDto {
 
 	@Schema(description = "Desired target weight")
 	@JsonProperty("target_weight")
-	private float targetWeight;
+	private Float targetWeight;
 
 	@Schema(description = "When aim was assigned")
 	private LocalDate mentioned;

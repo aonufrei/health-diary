@@ -15,16 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Validator;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
+import java.util.stream.Collectors;
 
 
 @Service
 public class PersonService extends AbstractCrudService<Integer, Person, PersonDto, PersonInDto, PersonRepository> {
 
-	@Autowired
-	BodyReportService bodyReportService;
+	private final BodyReportService bodyReportService;
 
-	public PersonService(PersonRepository repo, Validator validator) {
+	public PersonService(PersonRepository repo, BodyReportService bodyReportService, Validator validator) {
 		super(repo, ModelDtoUtil::inDtoToModel, ModelDtoUtil::modelToDto, ModelDtoUtil::updateModel);
+		this.bodyReportService = bodyReportService;
 		setValidator(validator);
 	}
 
@@ -49,26 +51,25 @@ public class PersonService extends AbstractCrudService<Integer, Person, PersonDt
 		return Math.toIntExact(ChronoUnit.YEARS.between(person.getDob(), LocalDate.now()));
 	}
 
-	public Integer getAge(Person person) {
-		return Math.toIntExact(ChronoUnit.YEARS.between(person.getDob(), LocalDate.now()));
-	}
-
 	@Transactional
 	public Integer addPersonWithBodyReports(PersonWithBodyReportInDto inDto) {
-		Integer personId = super.add(inDto.getPerson()).getId();
+		if (inDto == null) {
+			return null;
+		}
+		Integer personId = add(inDto.getPerson()).getId();
 
 		BodyReportInDto heightReport = BodyReportInDto.builder()
 				.value(inDto.getHeight())
 				.type(BodyReportType.HEIGHT)
 				.personId(personId)
-				.loggedTime(inDto.getMentioned().atStartOfDay())
+				.loggedTime(inDto.getMentioned() != null ? inDto.getMentioned().atStartOfDay() : null)
 				.build();
 
 		BodyReportInDto weightReport = BodyReportInDto.builder()
 				.value(inDto.getWeight())
 				.type(BodyReportType.WEIGHT)
 				.personId(personId)
-				.loggedTime(inDto.getMentioned().atStartOfDay())
+				.loggedTime(inDto.getMentioned() != null ? inDto.getMentioned().atStartOfDay() : null)
 				.build();
 
 		bodyReportService.add(heightReport);
@@ -79,15 +80,14 @@ public class PersonService extends AbstractCrudService<Integer, Person, PersonDt
 	@Transactional
 	public PersonWithBodyReportDto getPersonWithBodyReports(Integer personId) {
 		Person person = repo.findById(personId).orElseThrow(() -> new DataValidationException("Person was not found"));
-		BodyReport heightReport = bodyReportService.getRepo().getBodyReportByPersonIdAndType(person.getId(), BodyReportType.HEIGHT)
+		BodyReportDto heightBodyReport = bodyReportService.getBodyReportsByPersonAndType(person.getId(), BodyReportType.HEIGHT)
 				.stream().findFirst().orElseThrow(() -> new DataValidationException("Height report was not found"));
-		BodyReport weightReport = bodyReportService.getRepo().getBodyReportByPersonIdAndType(person.getId(), BodyReportType.WEIGHT)
+		BodyReportDto weightBodyReport = bodyReportService.getBodyReportsByPersonAndType(person.getId(), BodyReportType.WEIGHT)
 				.stream().findFirst().orElseThrow(() -> new DataValidationException("Weight report was not found"));
-
 		return PersonWithBodyReportDto.builder()
 				.person(modelToDtoFunction.apply(person))
-				.height(heightReport.getValue())
-				.weight(weightReport.getValue())
+				.height(heightBodyReport.getValue())
+				.weight(weightBodyReport.getValue())
 				.build();
 
 	}

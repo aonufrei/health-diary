@@ -19,7 +19,6 @@ public class LikeService extends AbstractCrudService<Integer, Like, LikeDto, Lik
 		setValidator(validator);
 	}
 
-	@Transactional
 	public boolean deleteLikeByPersonAndPost(Integer personId, Integer postId) {
 		repo.deleteLikeByPersonAndPost(personId, postId);
 		return true;
