@@ -12,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.Comparator;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -56,6 +58,26 @@ public class PersonService extends AbstractCrudService<Integer, Person, PersonDt
 		if (inDto == null) {
 			return null;
 		}
+
+		if (validator != null) {
+			Set<ConstraintViolation<PersonWithBodyReportInDto>> generalErrors = validator.validate(inDto);
+			generalErrors.stream().findFirst().ifPresent(error -> {
+				throw new DataValidationException(error.getMessage());
+			});
+			Set<ConstraintViolation<PersonInDto>> personErrors = validator.validate(inDto.getPerson());
+			personErrors.stream().findFirst().ifPresent(error -> {
+				throw new DataValidationException(error.getMessage());
+			});
+		}
+
+		if (inDto.getWeight() < 30 || inDto.getWeight() > 400) {
+			throw new DataValidationException("weight is out of range (30 - 400)");
+		}
+
+		if (inDto.getHeight() < 30 || inDto.getHeight() > 300) {
+			throw new DataValidationException("height is out of range (30 - 300)");
+		}
+
 		Integer personId = add(inDto.getPerson()).getId();
 
 		BodyReportInDto heightReport = BodyReportInDto.builder()

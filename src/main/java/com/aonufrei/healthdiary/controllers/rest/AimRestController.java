@@ -2,6 +2,7 @@ package com.aonufrei.healthdiary.controllers.rest;
 
 import com.aonufrei.healthdiary.dtos.AimDto;
 import com.aonufrei.healthdiary.dtos.AimInDto;
+import com.aonufrei.healthdiary.exceptions.DataValidationException;
 import com.aonufrei.healthdiary.services.AimService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

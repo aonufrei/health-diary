@@ -18,7 +18,7 @@ import static com.aonufrei.healthdiary.configurations.ApplicationConfigs.DEFAULT
 
 @Tag(name = "Body Report Controller")
 @RestController
-@RequestMapping("api/v1/body_reports")
+@RequestMapping("api/v1/body-reports")
 public class BodyReportRestController {
 
 	private final BodyReportService service;

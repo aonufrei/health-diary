@@ -87,20 +87,6 @@ public class PersonRestController {
 	@Operation(summary = "Adds person with body report")
 	@PostMapping("/with-report")
 	public Integer addPersonWithBodyReport(@RequestBody PersonWithBodyReportInDto inDto) {
-		Set<ConstraintViolation<PersonWithBodyReportInDto>> generalErrors = service.getValidator().validate(inDto);
-		generalErrors.stream().findFirst().ifPresent(error -> {
-			throw new DataValidationException(error.getMessage());
-		});
-		Set<ConstraintViolation<PersonInDto>> personErrors = service.getValidator().validate(inDto.getPerson());
-		personErrors.stream().findFirst().ifPresent(error -> {
-			throw new DataValidationException(error.getMessage());
-		});
-		if (inDto.getWeight() < 30 || inDto.getWeight() > 400) {
-			throw new DataValidationException("weight is out of range (30 - 400)");
-		}
-		if (inDto.getHeight() < 30 || inDto.getHeight() > 300) {
-			throw new DataValidationException("height is out of range (30 - 300)");
-		}
 		return service.addPersonWithBodyReports(inDto);
 	}
 

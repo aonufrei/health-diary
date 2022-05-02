@@ -2,6 +2,7 @@ package com.aonufrei.healthdiary.services;
 
 import com.aonufrei.healthdiary.dtos.FoodReportDto;
 import com.aonufrei.healthdiary.dtos.FoodReportInDto;
+import com.aonufrei.healthdiary.exceptions.DataValidationException;
 import com.aonufrei.healthdiary.models.FoodReport;
 import com.aonufrei.healthdiary.repositories.FoodReportRepository;
 import com.aonufrei.healthdiary.utils.ModelDtoUtil;

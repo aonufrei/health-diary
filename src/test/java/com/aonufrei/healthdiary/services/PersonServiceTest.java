@@ -11,13 +11,12 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validator;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import static org.hibernate.validator.internal.engine.ConstraintViolationImpl.forBeanValidation;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -141,7 +140,51 @@ class PersonServiceTest {
 		when(bodyReportService.add(any(BodyReportInDto.class))).thenReturn(BodyReport.builder().id(1).build());
 
 		assertDoesNotThrow(() -> personService.addPersonWithBodyReports(personWithBodyReport));
+		personWithBodyReport.setWeight(10f);
+		assertThrows(DataValidationException.class, () -> personService.addPersonWithBodyReports(personWithBodyReport));
+		personWithBodyReport.setWeight(1000f);
+		assertThrows(DataValidationException.class, () -> personService.addPersonWithBodyReports(personWithBodyReport));
+		personWithBodyReport.setWeight(90f);
+		personWithBodyReport.setHeight(10f);
+		assertThrows(DataValidationException.class, () -> personService.addPersonWithBodyReports(personWithBodyReport));
+		personWithBodyReport.setHeight(1000f);
+		assertThrows(DataValidationException.class, () -> personService.addPersonWithBodyReports(personWithBodyReport));
 		assertNull(personService.addPersonWithBodyReports(null));
+	}
+
+	@Test
+	void testAddPersonWithBodyReportsWhenInvalidInDto() {
+		assertNotNull(bodyReportService);
+		assertNotNull(personService);
+
+		PersonWithBodyReportInDto personWithBodyReport = PersonWithBodyReportInDto.builder()
+				.person(PersonInDto.builder().name("Test").build())
+				.weight(90f)
+				.height(175f)
+				.build();
+
+		personService.setValidator(mock(Validator.class));
+		when(personService.getValidator().validate(any(PersonWithBodyReportInDto.class))).thenReturn(createFakeValidationError(PersonWithBodyReportInDto.class));
+
+		assertThrows(DataValidationException.class, () -> personService.addPersonWithBodyReports(personWithBodyReport));
+	}
+
+	@Test
+	void testAddPersonWithBodyReportsWhenInvalidPerson() {
+		assertNotNull(bodyReportService);
+		assertNotNull(personService);
+
+		PersonWithBodyReportInDto personWithBodyReport = PersonWithBodyReportInDto.builder()
+				.person(PersonInDto.builder().name("Test").build())
+				.weight(90f)
+				.height(175f)
+				.build();
+
+		personService.setValidator(mock(Validator.class));
+		when(personService.getValidator().validate(personWithBodyReport)).thenReturn(new HashSet<>());
+		when(personService.getValidator().validate(personWithBodyReport.getPerson())).thenReturn(createFakeValidationError(PersonInDto.class));
+
+		assertThrows(DataValidationException.class, () -> personService.addPersonWithBodyReports(personWithBodyReport));
 	}
 
 	@Test
@@ -177,5 +220,12 @@ class PersonServiceTest {
 		assertThrows(DataValidationException.class, () -> personService.getPersonWithBodyReports(100));
 		assertThrows(DataValidationException.class, () -> personService.getPersonWithBodyReports(101));
 		assertThrows(DataValidationException.class, () -> personService.getPersonWithBodyReports(102));
+	}
+
+	private <T> Set<ConstraintViolation<T>> createFakeValidationError(Class<T> ignore) {
+		Set<ConstraintViolation<T>> expectedValidationErrors = new HashSet<>();
+		ConstraintViolation<T> violation = forBeanValidation(null, null, null, null, null, null, null, null, null, null, null);
+		expectedValidationErrors.add(violation);
+		return expectedValidationErrors;
 	}
 }

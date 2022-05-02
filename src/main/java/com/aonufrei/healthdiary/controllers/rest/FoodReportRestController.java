@@ -18,7 +18,7 @@ import static com.aonufrei.healthdiary.configurations.ApplicationConfigs.DEFAULT
 
 @Tag(name = "Food Report Controller")
 @RestController
-@RequestMapping("api/v1/food_reports")
+@RequestMapping("api/v1/food-reports")
 public class FoodReportRestController {
 
 	private final FoodReportService service;
@@ -73,11 +73,11 @@ public class FoodReportRestController {
 
 	@Operation(summary = "Get all food reports by day")
 	@Parameters({
-			@Parameter(name = "person", description = "Id of person who reported food"),
+			@Parameter(name = "person_id", description = "Id of person who reported food"),
 			@Parameter(name = "date", description = "Date to get food reports")
 	})
 	@GetMapping("/day")
-	public List<FoodReportDto> getFoodReportByPersonIdAndDay(@RequestParam(name = "person") Integer personId, @RequestParam(name = "date") String stringDate) {
+	public List<FoodReportDto> getFoodReportByPersonIdAndDay(@RequestParam(name = "person_id") Integer personId, @RequestParam(name = "date") String stringDate) {
 		return service.getAllFoodReportsByPersonByDayDto(personId, convertToDate(stringDate, "Date is required"));
 	}
 

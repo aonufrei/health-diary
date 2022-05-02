@@ -34,9 +34,6 @@ public class DailyReportRestController {
 	})
 	@GetMapping("/day")
 	public DailyReportDto getDailyReport(@RequestParam("person") Integer personId, @RequestParam("date") String stringDate) {
-		if (personId == null)  {
-			throw new DataValidationException("person is required");
-		}
 		return service.getDailyReportCalories(personId, convertToDate(stringDate, "date format is incorrect"));
 	}
 

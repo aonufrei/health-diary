@@ -4,7 +4,6 @@ import com.aonufrei.healthdiary.models.Aim;
 import com.aonufrei.healthdiary.models.AimStatus;
 import com.aonufrei.healthdiary.repositories.AimRepository;
 import com.aonufrei.healthdiary.utils.ModelDtoUtil;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

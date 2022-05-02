@@ -40,8 +40,6 @@ class FoodServiceTest {
 	@InjectMocks
 	FoodService foodService;
 
-	private final LocalDate today = LocalDate.now();
-
 	@Test
 	public void testAddWithMetrics() {
 		assertNotNull(foodRepository);
