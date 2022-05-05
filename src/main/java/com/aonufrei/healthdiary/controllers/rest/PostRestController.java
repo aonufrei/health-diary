@@ -6,6 +6,7 @@ import com.aonufrei.healthdiary.services.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -19,6 +20,7 @@ import static com.aonufrei.healthdiary.configurations.ApplicationConfigs.DEFAULT
 @Tag(name = "Post Controller")
 @RestController
 @RequestMapping("api/v1/posts")
+@SecurityRequirement(name = "app-security")
 public class PostRestController {
 
 	private final PostService service;

@@ -8,6 +8,7 @@ import com.aonufrei.healthdiary.services.BodyReportService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +20,7 @@ import static com.aonufrei.healthdiary.configurations.ApplicationConfigs.DEFAULT
 @Tag(name = "Body Report Controller")
 @RestController
 @RequestMapping("api/v1/body-reports")
+@SecurityRequirement(name = "app-security")
 public class BodyReportRestController {
 
 	private final BodyReportService service;

@@ -10,7 +10,9 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.ConstraintViolation;
@@ -23,6 +25,7 @@ import static com.aonufrei.healthdiary.configurations.ApplicationConfigs.DEFAULT
 @Tag(name = "Person Controller")
 @RestController
 @RequestMapping("api/v1/persons")
+@SecurityRequirement(name = "app-security")
 public class PersonRestController {
 
 	private final PersonService service;
@@ -61,6 +64,7 @@ public class PersonRestController {
 			@Parameter(name = "id", description = "Id of the person you want to get")
 	})
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public PersonDto getPersonById(@PathVariable Integer id) {
 		return service.getById(id);
 	}

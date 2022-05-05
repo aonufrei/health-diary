@@ -22,6 +22,17 @@ public class ModelDtoUtil {
 				.build();
 	}
 
+	public static Credentials inDtoToModel(@NotNull CredentialsInDto inDto) {
+		if (inDto == null) return null;
+
+		return Credentials.builder()
+				.username(inDto.getUsername())
+				.password(inDto.getPassword())
+				.personId(inDto.getPersonId())
+				.authority(inDto.getAuthority())
+				.build();
+	}
+
 	public static BodyReport inDtoToModel(@NotNull BodyReportInDto inDto) {
 		if (inDto == null) return null;
 
@@ -110,6 +121,15 @@ public class ModelDtoUtil {
 		Optional.ofNullable(inDto.getStatus()).ifPresent(model::setStatus);
 	}
 
+	public static void updateModel(@NotNull Credentials model, @NotNull CredentialsInDto inDto) {
+		if (inDto == null) return;
+
+		Optional.ofNullable(inDto.getUsername()).ifPresent(model::setUsername);
+		Optional.ofNullable(inDto.getPassword()).ifPresent(model::setPassword);
+		Optional.ofNullable(inDto.getPersonId()).ifPresent(model::setPersonId);
+		Optional.ofNullable(inDto.getAuthority()).ifPresent(model::setAuthority);
+	}
+
 	public static void updateModel(@NotNull BodyReport model, @NotNull BodyReportInDto inDto) {
 		if (inDto == null) return;
 
@@ -184,6 +204,20 @@ public class ModelDtoUtil {
 				.mentioned(model.getMentioned())
 				.personDto(model.getPerson() != null ? modelToDto(model.getPerson()) : null)
 				.status(model.getStatus())
+				.modifiedAt(model.getModifiedAt())
+				.build();
+	}
+
+	public static CredentialsDto modelToDto(@NotNull Credentials model) {
+		if (model == null) return null;
+
+		return CredentialsDto.builder()
+				.id(model.getId())
+				.username(model.getUsername())
+				.password(model.getPassword())
+				.authority(model.getAuthority())
+				.personId(model.getPersonId())
+				.createdAt(model.getCreatedAt())
 				.modifiedAt(model.getModifiedAt())
 				.build();
 	}

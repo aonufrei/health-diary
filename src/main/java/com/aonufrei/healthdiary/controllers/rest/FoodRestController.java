@@ -7,6 +7,7 @@ import com.aonufrei.healthdiary.services.FoodService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,6 +19,7 @@ import static com.aonufrei.healthdiary.configurations.ApplicationConfigs.DEFAULT
 @Tag(name = "Food Controller")
 @RestController
 @RequestMapping("api/v1/food")
+@SecurityRequirement(name = "app-security")
 public class FoodRestController {
 
 	private final FoodService service;

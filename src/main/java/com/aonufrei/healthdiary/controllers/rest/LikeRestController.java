@@ -6,6 +6,7 @@ import com.aonufrei.healthdiary.services.LikeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +18,7 @@ import static com.aonufrei.healthdiary.configurations.ApplicationConfigs.DEFAULT
 @Tag(name = "Like Controller")
 @RestController
 @RequestMapping("api/v1/likes")
+@SecurityRequirement(name = "app-security")
 public class LikeRestController {
 
 	private final LikeService service;
