@@ -33,7 +33,7 @@ class BodyReportRepositoryTest {
 	private BodyReportRepository bodyReportRepository;
 
 	@Test
-	void getBodyReportByPersonIdAndType() {
+	void testGetBodyReportByPersonIdAndType() {
 		assertNotNull(entityManager);
 		assertNotNull(bodyReportRepository);
 

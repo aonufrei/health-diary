@@ -2,8 +2,6 @@ package com.aonufrei.healthdiary.services;
 
 import com.aonufrei.healthdiary.dtos.AimDto;
 import com.aonufrei.healthdiary.dtos.AimInDto;
-import com.aonufrei.healthdiary.dtos.PersonDto;
-import com.aonufrei.healthdiary.exceptions.DataValidationException;
 import com.aonufrei.healthdiary.models.Aim;
 import com.aonufrei.healthdiary.repositories.AimRepository;
 import com.aonufrei.healthdiary.utils.ModelDtoUtil;

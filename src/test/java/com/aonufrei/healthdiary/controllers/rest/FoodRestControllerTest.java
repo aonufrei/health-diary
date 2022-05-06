@@ -8,20 +8,26 @@ import com.aonufrei.healthdiary.models.Food;
 import com.aonufrei.healthdiary.services.FoodService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(FoodRestController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class FoodRestControllerTest {
 
 	@MockBean
@@ -39,7 +45,125 @@ class FoodRestControllerTest {
 	}
 
 	@Test
-	void testGetAllFood() throws Exception {
+	@WithMockUser(authorities = "ADMIN")
+	void testGetAllFoodForAdmin() throws Exception {
+		testGetAllFood();
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	void testAddFoodForAdmin() throws Exception {
+		testAddFood();
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	void testAddFoodWithMetricsForAdmin() throws Exception {
+		testAddFoodWithMetrics();
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	void testAddFoodWithMetricsWhenErrorForAdmin() throws Exception {
+		testAddFoodWithMetricsWhenError();
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	void testUpdateFoodForAdmin() throws Exception {
+		testUpdateFood();
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	void testGetFoodByIdForAdmin() throws Exception {
+		testGetFoodById();
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	void testDeleteFoodForAdmin() throws Exception {
+		testDeleteFood();
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	void testGetAllFoodForUser() throws Exception {
+		testGetAllFood();
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	void testAddFoodForUser() throws Exception {
+		assertNotNull(service);
+		assertNotNull(objectMapper);
+
+		FoodInDto inDto = FoodInDto.builder().build();
+		when(service.add(inDto)).thenReturn(Food.builder().build());
+		when(service.add(null)).thenThrow(DataValidationException.class);
+
+		mvc.perform(post(url).with(csrf()).contentType(MediaType.APPLICATION_JSON_VALUE)
+						.content(objectMapper.writeValueAsString(inDto)))
+				.andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	void testAddFoodWithMetricsForUser() throws Exception {
+		assertNotNull(service);
+		assertNotNull(objectMapper);
+
+		when(service.addWithMetrics(FoodWithMetricsInDto.builder().build())).thenReturn(true);
+		mvc.perform(post(url + "/with-metrics").with(csrf()).contentType(MediaType.APPLICATION_JSON_VALUE)
+						.content(objectMapper.writeValueAsString(FoodWithMetricsInDto.builder().build())))
+				.andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	void testAddFoodWithMetricsWhenErrorForUser() throws Exception {
+		assertNotNull(service);
+		assertNotNull(objectMapper);
+
+		when(service.addWithMetrics(FoodWithMetricsInDto.builder().build())).thenThrow(DataValidationException.class);
+		mvc.perform(post(url + "/with-metrics").with(csrf()).contentType(MediaType.APPLICATION_JSON_VALUE)
+						.content(objectMapper.writeValueAsString(FoodWithMetricsInDto.builder().build())))
+				.andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	void testUpdateFoodForUser() throws Exception {
+		assertNotNull(service);
+		assertNotNull(objectMapper);
+
+		FoodInDto inDto = FoodInDto.builder().build();
+		when(service.update(1, inDto)).thenReturn(true);
+		when(service.update(1, null)).thenThrow(DataValidationException.class);
+
+		mvc.perform(put(url + "/1").with(csrf())
+						.contentType(MediaType.APPLICATION_JSON_VALUE)
+						.content(objectMapper.writeValueAsString(inDto)))
+				.andExpect(status().is4xxClientError());
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	void testGetFoodByIdForUser() throws Exception {
+		testGetFoodById();
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	void testDeleteFoodForUser() throws Exception {
+		assertNotNull(service);
+
+		doNothing().when(service).delete(anyInt());
+		mvc.perform(delete(url + "/1").with(csrf()))
+				.andExpect(status().is4xxClientError());
+	}
+
+	private void testGetAllFood() throws Exception {
 		assertNotNull(service);
 
 		when(service.getAll(anyInt(), anyInt())).thenReturn(Collections.emptyList());
@@ -53,8 +177,7 @@ class FoodRestControllerTest {
 				.andExpect(status().isBadRequest());
 	}
 
-	@Test
-	void testAddFood() throws Exception {
+	private void testAddFood() throws Exception {
 		assertNotNull(service);
 		assertNotNull(objectMapper);
 
@@ -62,41 +185,38 @@ class FoodRestControllerTest {
 		when(service.add(inDto)).thenReturn(Food.builder().build());
 		when(service.add(null)).thenThrow(DataValidationException.class);
 
-		mvc.perform(post(url).contentType(MediaType.APPLICATION_JSON_VALUE)
+		mvc.perform(post(url).with(csrf()).contentType(MediaType.APPLICATION_JSON_VALUE)
 						.content(objectMapper.writeValueAsString(inDto)))
 				.andExpect(status().isOk());
-		mvc.perform(post(url))
+		mvc.perform(post(url).with(csrf()))
 				.andExpect(status().isBadRequest());
 	}
 
-	@Test
-	void testAddFoodWithMetrics() throws Exception {
+	private void testAddFoodWithMetrics() throws Exception {
 		assertNotNull(service);
 		assertNotNull(objectMapper);
 
 		when(service.addWithMetrics(FoodWithMetricsInDto.builder().build())).thenReturn(true);
-		mvc.perform(post(url + "/with-metrics").contentType(MediaType.APPLICATION_JSON_VALUE)
+		mvc.perform(post(url + "/with-metrics").with(csrf()).contentType(MediaType.APPLICATION_JSON_VALUE)
 						.content(objectMapper.writeValueAsString(FoodWithMetricsInDto.builder().build())))
 				.andExpect(status().isOk());
-		mvc.perform(post(url + "/with-metrics"))
+		mvc.perform(post(url + "/with-metrics").with(csrf()))
 				.andExpect(status().isBadRequest());
 	}
 
-	@Test
-	void testAddFoodWithMetricsWhenError() throws Exception {
+	private void testAddFoodWithMetricsWhenError() throws Exception {
 		assertNotNull(service);
 		assertNotNull(objectMapper);
 
 		when(service.addWithMetrics(FoodWithMetricsInDto.builder().build())).thenThrow(DataValidationException.class);
-		mvc.perform(post(url + "/with-metrics").contentType(MediaType.APPLICATION_JSON_VALUE)
+		mvc.perform(post(url + "/with-metrics").with(csrf()).contentType(MediaType.APPLICATION_JSON_VALUE)
 						.content(objectMapper.writeValueAsString(FoodWithMetricsInDto.builder().build())))
 				.andExpect(status().isBadRequest());
-		mvc.perform(post(url + "/with-metrics"))
+		mvc.perform(post(url + "/with-metrics").with(csrf()))
 				.andExpect(status().isBadRequest());
 	}
 
-	@Test
-	void testUpdateFood() throws Exception {
+	private void testUpdateFood() throws Exception {
 		assertNotNull(service);
 		assertNotNull(objectMapper);
 
@@ -104,22 +224,21 @@ class FoodRestControllerTest {
 		when(service.update(1, inDto)).thenReturn(true);
 		when(service.update(1, null)).thenThrow(DataValidationException.class);
 
-		mvc.perform(put(url + "/1")
+		mvc.perform(put(url + "/1").with(csrf())
 						.contentType(MediaType.APPLICATION_JSON_VALUE)
 						.content(objectMapper.writeValueAsString(inDto)))
 				.andExpect(status().isOk());
-		mvc.perform(put(url)
+		mvc.perform(put(url).with(csrf())
 						.contentType(MediaType.APPLICATION_JSON_VALUE)
 						.content(objectMapper.writeValueAsString(inDto)))
 				.andExpect(status().is4xxClientError());
-		mvc.perform(put(url + "/1"))
+		mvc.perform(put(url + "/1").with(csrf()))
 				.andExpect(status().isBadRequest());
-		mvc.perform(put(url))
+		mvc.perform(put(url).with(csrf()))
 				.andExpect(status().is4xxClientError());
 	}
 
-	@Test
-	void testGetFoodById() throws Exception {
+	private void testGetFoodById() throws Exception {
 		assertNotNull(service);
 
 		when(service.getById(anyInt())).thenReturn(FoodDto.builder().build());
@@ -127,12 +246,11 @@ class FoodRestControllerTest {
 				.andExpect(status().isOk());
 	}
 
-	@Test
-	void testDeleteFood() throws Exception {
+	private void testDeleteFood() throws Exception {
 		assertNotNull(service);
 
 		doNothing().when(service).delete(anyInt());
-		mvc.perform(delete(url + "/1"))
+		mvc.perform(delete(url + "/1").with(csrf()))
 				.andExpect(status().isOk());
 	}
 }

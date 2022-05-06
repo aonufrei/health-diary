@@ -47,7 +47,7 @@ class AimServiceTest {
 	}};
 
 	@Test
-	public void getAllByPersonId() {
+	public void testGetAllByPersonId() {
 		assertNotNull(aimRepo);
 		assertNotNull(aimService);
 

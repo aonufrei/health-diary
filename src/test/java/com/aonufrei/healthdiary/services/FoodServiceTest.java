@@ -5,8 +5,6 @@ import com.aonufrei.healthdiary.dtos.FoodWithMetricsInDto;
 import com.aonufrei.healthdiary.dtos.MetricInDto;
 import com.aonufrei.healthdiary.exceptions.DataValidationException;
 import com.aonufrei.healthdiary.models.Food;
-import com.aonufrei.healthdiary.models.FoodReport;
-import com.aonufrei.healthdiary.models.Metric;
 import com.aonufrei.healthdiary.repositories.FoodRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -17,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

@@ -36,12 +36,14 @@ public class FoodReportRestController {
 			@Parameter(name = "size", description = "The size of the requested page. Default value is 10")
 	})
 	@GetMapping
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public List<FoodReportDto> getAllFoodReports(@RequestParam("page") Integer page, @RequestParam(value = "size", required = false) Integer pageSize) {
 		return service.getAll(page, Optional.ofNullable(pageSize).orElse(DEFAULT_LIST_RESULT_PAGE_SIZE));
 	}
 
 	@Operation(summary = "Create food report")
 	@PostMapping
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public Integer addFoodReport(@RequestBody FoodReportInDto inDto) {
 		return service.add(inDto).getId();
 	}
@@ -51,6 +53,7 @@ public class FoodReportRestController {
 			@Parameter(name = "id", description = "Id of the food report you want to update")
 	})
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public boolean updateFoodReport(@RequestBody FoodReportInDto inDto, @PathVariable("id") Integer id) {
 		return service.update(id, inDto);
 	}
@@ -60,6 +63,7 @@ public class FoodReportRestController {
 			@Parameter(name = "id", description = "Id of the food report you want to get")
 	})
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public FoodReportDto getFoodReportById(@PathVariable("id") Integer id) {
 		return service.getById(id);
 	}
@@ -69,6 +73,7 @@ public class FoodReportRestController {
 			@Parameter(name = "id", description = "Id of the food report you want to delete")
 	})
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public boolean deleteFoodReport(@PathVariable("id") Integer id) {
 		service.delete(id);
 		return true;
@@ -80,6 +85,7 @@ public class FoodReportRestController {
 			@Parameter(name = "date", description = "Date to get food reports")
 	})
 	@GetMapping("/day")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public List<FoodReportDto> getFoodReportByPersonIdAndDay(@RequestParam(name = "person_id") Integer personId, @RequestParam(name = "date") String stringDate) {
 		return service.getAllFoodReportsByPersonByDayDto(personId, convertToDate(stringDate, "Date is required"));
 	}

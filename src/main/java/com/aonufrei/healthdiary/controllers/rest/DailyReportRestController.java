@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,6 +36,7 @@ public class DailyReportRestController {
 			@Parameter(name = "date", description = "Date to get calories report")
 	})
 	@GetMapping("/day")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public DailyReportDto getDailyReport(@RequestParam("person") Integer personId, @RequestParam("date") String stringDate) {
 		return service.getDailyReportCalories(personId, convertToDate(stringDate, "date format is incorrect"));
 	}
@@ -46,6 +48,7 @@ public class DailyReportRestController {
 			@Parameter(name = "to_date", description = "To date of the range")
 	})
 	@GetMapping("/days")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public List<CaloriesPerDay> getCaloriesByDays(@RequestParam("person") Integer personId, @RequestParam("from_date") String stringFromDate,
 	                                              @RequestParam("to_date") String stringToDate) {
 		LocalDate fromDate = convertToDate(stringFromDate, "from_date format is incorrect");

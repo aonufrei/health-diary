@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ import static com.aonufrei.healthdiary.configurations.ApplicationConfigs.DEFAULT
 @RestController
 @RequestMapping("api/v1/posts")
 @SecurityRequirement(name = "app-security")
+@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 public class PostRestController {
 
 	private final PostService service;

@@ -7,21 +7,27 @@ import com.aonufrei.healthdiary.models.Post;
 import com.aonufrei.healthdiary.services.PostService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(PostRestController.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@AutoConfigureMockMvc
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PostRestControllerTest {
 
 	@MockBean
@@ -36,7 +42,91 @@ class PostRestControllerTest {
 	private static final String url = "/api/v1/posts";
 
 	@Test
-	void testGetAllPosts() throws Exception {
+	@WithMockUser(authorities = "USER")
+	public void testGetAllPostsForUser() throws Exception {
+		testGetAllPosts();
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	public void testAddPostForUser() throws Exception {
+		testAddPost();
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	public void testUpdatePostForUser() throws Exception {
+		testUpdatePost();
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	public void testGetPostByIdForUser() throws Exception {
+		testGetPostById();
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	public void testDeletePostForUser() throws Exception {
+		testDeletePost();
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	public void testGetPostsByPersonForUser() throws Exception {
+		testGetPostsByPerson();
+	}
+
+	@Test
+	@WithMockUser(authorities = "USER")
+	public void testGetFeedsForPersonForUser() throws Exception {
+		testGetFeedsForPerson();
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	public void testGetAllPostsForAdmin() throws Exception {
+		testGetAllPosts();
+		;
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	public void testAddPostForAdmin() throws Exception {
+		testAddPost();
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	public void testUpdatePostForAdmin() throws Exception {
+		testUpdatePost();
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	public void testGetPostByIdForAdmin() throws Exception {
+		testGetPostById();
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	public void testDeletePostForAdmin() throws Exception {
+		testDeletePost();
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	public void testGetPostsByPersonForAdmin() throws Exception {
+		testGetPostsByPerson();
+	}
+
+	@Test
+	@WithMockUser(authorities = "ADMIN")
+	public void testGetFeedsForPersonForAdmin() throws Exception {
+		testGetFeedsForPerson();
+	}
+
+	private void testGetAllPosts() throws Exception {
 		assertNotNull(service);
 
 		when(service.getAll(anyInt(), anyInt())).thenReturn(Collections.emptyList());
@@ -50,8 +140,7 @@ class PostRestControllerTest {
 				.andExpect(status().isBadRequest());
 	}
 
-	@Test
-	void testAddPost() throws Exception {
+	private void testAddPost() throws Exception {
 		assertNotNull(service);
 		assertNotNull(objectMapper);
 
@@ -59,15 +148,14 @@ class PostRestControllerTest {
 		when(service.add(inDto)).thenReturn(Post.builder().build());
 		when(service.add(null)).thenThrow(DataValidationException.class);
 
-		mvc.perform(post(url).contentType(MediaType.APPLICATION_JSON_VALUE)
+		mvc.perform(post(url).with(csrf()).contentType(MediaType.APPLICATION_JSON_VALUE)
 						.content(objectMapper.writeValueAsString(inDto)))
 				.andExpect(status().isOk());
-		mvc.perform(post(url))
+		mvc.perform(post(url).with(csrf()))
 				.andExpect(status().isBadRequest());
 	}
 
-	@Test
-	void testUpdatePost() throws Exception {
+	private void testUpdatePost() throws Exception {
 		assertNotNull(service);
 		assertNotNull(objectMapper);
 
@@ -75,22 +163,21 @@ class PostRestControllerTest {
 		when(service.update(1, inDto)).thenReturn(true);
 		when(service.update(1, null)).thenThrow(DataValidationException.class);
 
-		mvc.perform(put(url + "/1")
+		mvc.perform(put(url + "/1").with(csrf())
 						.contentType(MediaType.APPLICATION_JSON_VALUE)
 						.content(objectMapper.writeValueAsString(inDto)))
 				.andExpect(status().isOk());
-		mvc.perform(put(url)
+		mvc.perform(put(url).with(csrf())
 						.contentType(MediaType.APPLICATION_JSON_VALUE)
 						.content(objectMapper.writeValueAsString(inDto)))
 				.andExpect(status().is4xxClientError());
-		mvc.perform(put(url + "/1"))
+		mvc.perform(put(url + "/1").with(csrf()))
 				.andExpect(status().isBadRequest());
 		mvc.perform(put(url))
 				.andExpect(status().is4xxClientError());
 	}
 
-	@Test
-	void testGetPostById() throws Exception {
+	private void testGetPostById() throws Exception {
 		assertNotNull(service);
 
 		when(service.getById(anyInt())).thenReturn(PostDto.builder().build());
@@ -98,17 +185,15 @@ class PostRestControllerTest {
 				.andExpect(status().isOk());
 	}
 
-	@Test
-	void testDeletePost() throws Exception {
+	private void testDeletePost() throws Exception {
 		assertNotNull(service);
 
 		doNothing().when(service).delete(anyInt());
-		mvc.perform(delete(url + "/1"))
+		mvc.perform(delete(url + "/1").with(csrf()))
 				.andExpect(status().isOk());
 	}
 
-	@Test
-	void testGetPostsByPerson() throws Exception {
+	private void testGetPostsByPerson() throws Exception {
 		assertNotNull(service);
 
 		when(service.getPostsByPerson(anyInt(), any(Pageable.class))).thenReturn(Collections.emptyList());
@@ -122,8 +207,7 @@ class PostRestControllerTest {
 				.andExpect(status().isBadRequest());
 	}
 
-	@Test
-	void testGetFeedsForPerson() throws Exception {
+	private void testGetFeedsForPerson() throws Exception {
 		assertNotNull(service);
 
 		when(service.getFeedsForPerson(anyInt(), any(Pageable.class))).thenReturn(Collections.emptyList());

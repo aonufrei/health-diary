@@ -1,6 +1,7 @@
 package com.aonufrei.healthdiary.services;
 
 import com.aonufrei.healthdiary.dtos.AuthorizationCredentials;
+import com.aonufrei.healthdiary.dtos.CredentialsAndPersonWithBodyReportDto;
 import com.aonufrei.healthdiary.dtos.CredentialsDto;
 import com.aonufrei.healthdiary.dtos.CredentialsInDto;
 import com.aonufrei.healthdiary.exceptions.DataValidationException;
@@ -10,6 +11,7 @@ import com.aonufrei.healthdiary.security.jwt.JwtUtils;
 import com.aonufrei.healthdiary.security.models.UserDetailsImpl;
 import com.aonufrei.healthdiary.utils.ModelDtoUtil;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +19,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Validator;
 import java.time.Duration;
 import java.time.LocalDateTime;
@@ -28,23 +29,39 @@ public class CredentialsService extends AbstractCrudService<Integer, Credentials
 
 	private final JwtUtils jwtUtils;
 	private final PasswordEncoder passwordEncoder;
+	private final PersonService personService;
 
 	private final Duration tokenExpirationDuration = Duration.ofDays(10);
 
-	public CredentialsService(CredentialsRepository repo, Validator validator, JwtUtils jwtUtils, PasswordEncoder passwordEncoder) {
+	public CredentialsService(CredentialsRepository repo, Validator validator, JwtUtils jwtUtils, PasswordEncoder passwordEncoder, PersonService personService) {
 		super(repo, ModelDtoUtil::inDtoToModel, ModelDtoUtil::modelToDto, ModelDtoUtil::updateModel);
 		setValidator(validator);
 		this.jwtUtils = jwtUtils;
 		this.passwordEncoder = passwordEncoder;
+		this.personService = personService;
 	}
 
-	public boolean authorize(HttpServletResponse response, AuthorizationCredentials credentials) {
+	public String authorize(AuthorizationCredentials credentials) {
 		credentials.setCode(RandomStringUtils.randomAlphabetic(100));
 		LocalDateTime endExpirationDate = LocalDateTime.now().plus(tokenExpirationDuration);
 		Optional<String> token = jwtUtils.convertToJsonString(credentials).flatMap(it -> jwtUtils.encode(it, endExpirationDate));
 		UserDetails userDetails = loadUserByUsername(credentials.getUsername());
 		if (userDetails != null && passwordEncoder.matches(credentials.getPassword(), userDetails.getPassword()) && token.isPresent()) {
-			response.setHeader("Authorization", "Bearer " + token.get());
+			return token.get();
+		}
+		return "";
+	}
+
+	@Transactional
+	public boolean register(CredentialsAndPersonWithBodyReportDto credentialsWithPerson) {
+		validator.validate(credentialsWithPerson).stream().findFirst().ifPresent(it -> {
+			throw new DataValidationException(it.getMessage());
+		});
+		Integer personId = personService.addPersonWithBodyReports(credentialsWithPerson.getPersonWithBodyReportInDto());
+		if (personId != null) {
+			CredentialsInDto credentials = credentialsWithPerson.getCredentialsInDto();
+			credentials.setPersonId(personId);
+			register(credentials);
 			return true;
 		}
 		return false;
@@ -69,5 +86,13 @@ public class CredentialsService extends AbstractCrudService<Integer, Credentials
 				.flatMap(it -> Optional.ofNullable(repo.getFirstByUsername(username)))
 				.map(UserDetailsImpl::new)
 				.orElse(null);
+	}
+
+	public static UserDetailsImpl getCurrentUserDetails() {
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		if (principal instanceof UserDetailsImpl) {
+			return (UserDetailsImpl) principal;
+		}
+		return null;
 	}
 }

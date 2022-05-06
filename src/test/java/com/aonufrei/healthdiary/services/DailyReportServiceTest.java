@@ -49,7 +49,7 @@ class DailyReportServiceTest {
 	}};
 
 	@Test
-	void getDailyReportCalories() {
+	void testGetDailyReportCalories() {
 		assertNotNull(foodReportService);
 		assertNotNull(dailyReportService);
 
@@ -74,7 +74,7 @@ class DailyReportServiceTest {
 	}
 
 	@Test
-	void testGetDailyReportCalories() {
+	void testGetDailyReportCaloriesByDateRange() {
 		assertNotNull(foodReportService);
 		assertNotNull(dailyReportService);
 

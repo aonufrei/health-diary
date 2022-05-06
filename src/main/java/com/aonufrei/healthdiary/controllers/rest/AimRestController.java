@@ -36,6 +36,7 @@ public class AimRestController {
 			@Parameter(name = "size", description = "The size of the requested page. Default value is 10")
 	})
 	@GetMapping
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public List<AimDto> getAllAims(@RequestParam(name = "person_id", required = false) Integer personId,
 	                               @RequestParam("page") Integer page,
 	                               @RequestParam(name = "size", required = false) Integer pageSize) {
@@ -47,6 +48,7 @@ public class AimRestController {
 
 	@Operation(summary = "Create aim")
 	@PostMapping
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public Integer addAim(@RequestBody AimInDto inDto) {
 		return service.add(inDto).getId();
 	}
@@ -56,6 +58,7 @@ public class AimRestController {
 			@Parameter(name = "id", description = "Id of the aim you want to update")
 	})
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public boolean updateAim(@RequestBody AimInDto inDto, @PathVariable("id") Integer id) {
 		return service.update(id, inDto);
 	}
@@ -65,6 +68,7 @@ public class AimRestController {
 			@Parameter(name = "id", description = "Id of the aim you want to get")
 	})
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public AimDto getAimById(@PathVariable("id") Integer id) {
 		return service.getById(id);
 	}
@@ -76,6 +80,7 @@ public class AimRestController {
 			@Parameter(name = "size", description = "The size of the requested page. Default value is 10")
 	})
 	@GetMapping("/person/{id}")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public List<AimDto> getAimsByPersonId(@PathVariable("id") Integer id,
 	                                @RequestParam("page") Integer page,
 	                                @RequestParam(name = "size", required = false) Integer pageSize) {
@@ -87,6 +92,7 @@ public class AimRestController {
 			@Parameter(name = "id", description = "Id of the aim you want to delete")
 	})
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public boolean deleteAim(@PathVariable("id") Integer id) {
 		service.delete(id);
 		return true;

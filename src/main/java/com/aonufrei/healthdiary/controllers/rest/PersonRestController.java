@@ -26,6 +26,7 @@ import static com.aonufrei.healthdiary.configurations.ApplicationConfigs.DEFAULT
 @RestController
 @RequestMapping("api/v1/persons")
 @SecurityRequirement(name = "app-security")
+@PreAuthorize("hasAnyAuthority('ADMIN')")
 public class PersonRestController {
 
 	private final PersonService service;
@@ -63,8 +64,8 @@ public class PersonRestController {
 	@Parameters({
 			@Parameter(name = "id", description = "Id of the person you want to get")
 	})
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	@GetMapping("/{id}")
-	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public PersonDto getPersonById(@PathVariable Integer id) {
 		return service.getById(id);
 	}
@@ -98,6 +99,7 @@ public class PersonRestController {
 	@Parameters({
 			@Parameter(name = "id", description = "Id of the person you want to get calories details")
 	})
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	@GetMapping("/calories/{id}")
 	public Integer getCaloriesRequired(@PathVariable("id") Integer personId, @RequestParam(value = "deficit", required = false) Boolean showDeficit) {
 		if (showDeficit != null && showDeficit) {

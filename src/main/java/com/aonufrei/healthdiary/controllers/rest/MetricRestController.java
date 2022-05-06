@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,12 +34,14 @@ public class MetricRestController {
 			@Parameter(name = "size", description = "The size of the requested page. Default value is 10")
 	})
 	@GetMapping
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public List<MetricDto> getAllMetrics(@RequestParam("page") Integer page, @RequestParam(value = "size", required = false) Integer pageSize) {
 		return service.getAll(page, Optional.ofNullable(pageSize).orElse(DEFAULT_LIST_RESULT_PAGE_SIZE));
 	}
 
 	@Operation(summary = "Create metric")
 	@PostMapping
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public Integer addMetric(@RequestBody MetricInDto inDto) {
 		return service.add(inDto).getId();
 	}
@@ -48,6 +51,7 @@ public class MetricRestController {
 			@Parameter(name = "id", description = "Id of the metric you want to update")
 	})
 	@PutMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public boolean updateMetric(@RequestBody MetricInDto inDto, @PathVariable("id") Integer id) {
 		return service.update(id, inDto);
 	}
@@ -57,6 +61,7 @@ public class MetricRestController {
 			@Parameter(name = "id", description = "Id of the metric you want to get")
 	})
 	@GetMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('USER', 'ADMIN')")
 	public MetricDto getMetricById(@PathVariable("id") Integer id) {
 		return service.getById(id);
 	}
@@ -66,6 +71,7 @@ public class MetricRestController {
 			@Parameter(name = "id", description = "Id of the metric you want to delete")
 	})
 	@DeleteMapping("/{id}")
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	public boolean deleteMetric(@PathVariable("id") Integer id) {
 		service.delete(id);
 		return true;

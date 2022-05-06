@@ -36,7 +36,7 @@ class BodyReportServiceTest {
 	}};
 
 	@Test
-	public void getBodyReportsByPersonAndType() {
+	public void testGetBodyReportsByPersonAndType() {
 		assertNotNull(bodyReportRepository);
 		assertNotNull(bodyReportService);
 		List<BodyReport> expectedResults = bodyReports.stream().filter(it -> it.getPersonId().equals(2)).collect(Collectors.toList());

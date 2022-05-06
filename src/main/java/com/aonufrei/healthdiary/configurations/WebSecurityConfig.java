@@ -1,8 +1,9 @@
-package com.aonufrei.healthdiary.security;
+package com.aonufrei.healthdiary.configurations;
 
 import com.aonufrei.healthdiary.security.jwt.JwtUsernameAndPasswordAuthorizationFilter;
 import com.aonufrei.healthdiary.models.Authority;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -38,9 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
 				.authorizeRequests()
-				.antMatchers("/api/v1/**").hasAnyAuthority(Authority.ADMIN.name())
-				.antMatchers("/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
-				.antMatchers("/login", "/register").permitAll()
+				.antMatchers("/swagger-ui/*", "/v3/api-docs", "/v3/api-docs/*").permitAll()
+				.antMatchers("/login", "/register/*").permitAll()
 				.anyRequest().authenticated();
 	}
 

@@ -17,14 +17,19 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDetailsImpl implements UserDetails {
+
+	private Integer id;
 	private String username;
 	private String password;
+	private Integer personId;
 	private String role;
 
 
 	public UserDetailsImpl(Credentials credentials) {
+		this.id = credentials.getId();
 		this.username = credentials.getUsername();
 		this.password = credentials.getPassword();
+		this.personId = credentials.getPersonId();
 		this.role = credentials.getAuthority().name();
 	}
 

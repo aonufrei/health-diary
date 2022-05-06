@@ -34,8 +34,6 @@ class JwtUtilsTest {
 		String token2 = jwtUtils.encode(value2, LocalDateTime.now().plusMinutes(10)).orElse(null);
 		assertNotNull(token2);
 
-		assertNotEquals(token, jwtUtils.encode(value, LocalDateTime.now().plusMinutes(10)).orElse(null));
-
 		String decodedValue = jwtUtils.decode(token).orElse(null);
 		assertNotNull(decodedValue);
 
