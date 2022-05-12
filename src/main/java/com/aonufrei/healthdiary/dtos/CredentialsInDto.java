@@ -27,6 +27,7 @@ public class CredentialsInDto {
 
 	@Schema(description = "Related person id")
 	@JsonProperty("person_id")
+	@NotNull
 	private Integer personId;
 
 	@Schema(description = "Authority of the user")

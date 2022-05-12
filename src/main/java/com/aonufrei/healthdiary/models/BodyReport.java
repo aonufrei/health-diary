@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"person"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "body_reports")

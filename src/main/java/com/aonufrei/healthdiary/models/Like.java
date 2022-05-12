@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"author"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "likes")

@@ -66,10 +66,12 @@ public class DailyReportService {
 	}
 
 	public List<CaloriesPerDay> getDailyReportCalories(Integer personId, LocalDate fromDate, LocalDate toDate) {
+		if (fromDate.isAfter(toDate)) return Collections.emptyList();
 		List<FoodReport> reportsByDays = foodReportService.getFoodReportByPersonAndDateRange(personId, fromDate, toDate);
 
 		List<CaloriesPerDay> caloriesPerDays = new ArrayList<>();
-		for (LocalDate temp = fromDate; temp.isBefore(toDate.plusDays(1)); temp = temp.plusDays(1)) {
+		LocalDate temp = fromDate;
+		while (temp.isBefore(toDate)) {
 			LocalDate finalTemp = temp;
 			List<FoodReport> foodReportForDay = reportsByDays.stream().filter(it -> it.getReportedDate().equals(finalTemp)).collect(Collectors.toList());
 
@@ -79,6 +81,7 @@ public class DailyReportService {
 					.orElse(0f);
 
 			caloriesPerDays.add(CaloriesPerDay.builder().calories(Math.round(calories)).date(temp).build());
+			temp = temp.plusDays(1);
 		}
 		caloriesPerDays.sort(Comparator.comparing(CaloriesPerDay::getDate).reversed());
 		return caloriesPerDays;

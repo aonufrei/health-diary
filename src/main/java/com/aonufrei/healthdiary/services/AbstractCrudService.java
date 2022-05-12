@@ -57,7 +57,9 @@ public abstract class AbstractCrudService<ID, M, MD, MID, R extends JpaRepositor
 	}
 
 	public void delete(ID id) {
-		repo.deleteById(id);
+		try {
+			repo.deleteById(id);
+		} catch (Exception e) { }
 	}
 
 	public boolean update(ID id, MID inDto) {

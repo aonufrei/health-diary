@@ -11,7 +11,7 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
-@EqualsAndHashCode
+@EqualsAndHashCode(exclude = {"author"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity(name = "posts")

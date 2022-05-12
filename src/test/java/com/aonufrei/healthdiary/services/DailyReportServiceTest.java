@@ -12,7 +12,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -82,13 +84,13 @@ class DailyReportServiceTest {
 		expectedResult.add(new CaloriesPerDay(today.plusDays(3), 2));
 		expectedResult.add(new CaloriesPerDay(today.plusDays(4), 3));
 		expectedResult.add(new CaloriesPerDay(today.plusDays(5), 4));
-		expectedResult.add(new CaloriesPerDay(today.plusDays(6), 5));
 		List<FoodReport> expectedList = foodReportInDb.stream()
 				.filter(it -> it.getReportedDate().isAfter(today.plusDays(2))).collect(Collectors.toList());
 		when(foodReportService.getFoodReportByPersonAndDateRange(anyInt(), any(LocalDate.class), any(LocalDate.class))).thenReturn(expectedList);
 
 		assertDoesNotThrow(() -> dailyReportService.getDailyReportCalories(1, today.plusDays(3), today.plusDays(6)));
-		assertEquals(4, dailyReportService.getDailyReportCalories(1, today.plusDays(3), today.plusDays(6)).size());
+		assertEquals(Collections.emptyList(), dailyReportService.getDailyReportCalories(1, today.plusDays(1), today));
+		assertEquals(3, dailyReportService.getDailyReportCalories(1, today.plusDays(3), today.plusDays(6)).size());
 		assertEquals(new HashSet<>(expectedResult), new HashSet<>(dailyReportService.getDailyReportCalories(1, today.plusDays(3), today.plusDays(6))));
 	}
 }

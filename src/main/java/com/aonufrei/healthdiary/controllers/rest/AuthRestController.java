@@ -5,8 +5,6 @@ import com.aonufrei.healthdiary.dtos.CredentialsAndPersonWithBodyReportDto;
 import com.aonufrei.healthdiary.dtos.CredentialsInDto;
 import com.aonufrei.healthdiary.services.CredentialsService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.HttpStatus;
